@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recovery Biometrics - Supervisor Dashboard</title>
+
+  <style>
+    :root{
+      --ink:#0b1220;
+      --muted:#475569;
+      --line:#e2e8f0;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --accent:#2563eb;
+      --warn:#b45309;
+      --ok:#166534;
+      --soft:#f1f5f9;
+      --soft2:#f8fafc;
+      --amber:#fffbeb;
+      --amberLine:#fde68a;
+      --danger:#b91c1c;
+      --teal:#0f766e;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 12px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    
+    .account-switcher {
+      position: relative;
+    }
+    
+    .account-btn {
+      background: var(--soft2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .account-btn:hover {
+      background: var(--soft);
+    }
+    
+    .account-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.15);
+      min-width: 220px;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .account-dropdown.show {
+      display: block;
+    }
+    
+    .account-dropdown-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      border-bottom: 1px solid var(--line);
+    }
+    
+    .account-dropdown-item:last-child {
+      border-bottom: none;
+    }
+    
+    .account-dropdown-item:hover {
+      background: var(--soft2);
+    }
+    
+    .account-dropdown-item.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+    }
+    
+    .account-dropdown-item .role {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    
+    .muted {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    
+    .small {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.45;
+    }
+    
+    /* Buttons */
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      opacity: 0.9;
+    }
+    
+    .btn.secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    
+    .btn.ghost {
+      background: var(--soft2);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    
+    .btn.warn {
+      background: #fff7ed;
+      color: var(--warn);
+      border: 1px solid #fed7aa;
+    }
+    
+    .btn.success {
+      background: #f0fdf4;
+      color: var(--ok);
+      border: 1px solid #bbf7d0;
+    }
+    
+    .btn.copy {
+      background: var(--teal);
+      color: #fff;
+    }
+    
+    .btn.full {
+      width: 100%;
+    }
+    
+    /* Back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+    
+    /* VP Dashboard */
+    .team-overview {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+    
+    .team-overview h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+    
+    .team-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    
+    .team-stat {
+      font-size: 14px;
+    }
+    
+    .team-stat strong {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    .risk-dist {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    
+    .risk-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+    }
+    
+    /* Supervisor cards */
+    .supervisor-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .supervisor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    
+    .supervisor-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 2px;
+    }
+    
+    .supervisor-title {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    .supervisor-stats {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    
+    .stat-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    
+    .stat-badge.red {
+      background: #fef2f2;
+      color: var(--danger);
+    }
+    
+    .stat-badge.yellow {
+      background: #fefce8;
+      color: #a16207;
+    }
+    
+    .stat-badge.green {
+      background: #f0fdf4;
+      color: var(--ok);
+    }
+    
+    .last-active {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    
+    /* Client list */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .section-count {
+      background: var(--soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+    
+    .section-content {
+      display: none;
+    }
+    
+    .section-content.show {
+      display: block;
+    }
+    
+    .client-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    
+    .client-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+    
+    .client-id {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    
+    .client-changes {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    
+    .client-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    
+    .review-warning {
+      color: var(--warn);
+      font-weight: 600;
+    }
+    
+    .client-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+      user-select: none;
+      border-radius: 8px 8px 0 0;
+      white-space: nowrap;
+    }
+    
+    .tab.active {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-bottom: none;
+      color: var(--ink);
+    }
+    
+    .tab-panel {
+      display: none;
+    }
+    
+    .tab-panel.active {
+      display: block;
+    }
+    
+    /* Chips */
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    
+    .chip {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--soft2);
+      color: var(--muted);
+    }
+    
+    .chip.warn {
+      border-color: #fed7aa;
+      background: #fff7ed;
+      color: var(--warn);
+    }
+    
+    .chip.ok {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: var(--ok);
+    }
+    
+    .chip.up {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: var(--danger);
+    }
+    
+    /* Sparklines */
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+    
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .metric-name {
+      font-weight: 700;
+      font-size: 13px;
+    }
+    
+    .metric-sub {
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    
+    .metric-sub.down {
+      color: var(--warn);
+      font-weight: 700;
+    }
+    
+    .metric-sub.up {
+      color: var(--danger);
+      font-weight: 700;
+    }
+    
+    .metric-sub.flat {
+      color: var(--ok);
+      font-weight: 700;
+    }
+    
+    .spark {
+      width: 100%;
+      height: 58px;
+      display: block;
+      margin-top: 8px;
+    }
+    
+    .spark .axis {
+      stroke: #e5e7eb;
+      stroke-width: 1;
+    }
+    
+    .spark .line {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+    
+    .spark .dot {
+      fill: var(--accent);
+    }
+    
+    .legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    
+    /* Structured summary */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .facet {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: var(--soft2);
+    }
+    
+    .facet h4 {
+      margin: 0 0 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #334155;
+    }
+    
+    .facet p {
+      margin: 0;
+      color: #0f172a;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    
+    /* Notes */
+    .notes-section {
+      margin-top: 16px;
+    }
+    
+    .note-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: var(--soft2);
+    }
+    
+    .note-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+    
+    .note-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    
+    .note-text {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    
+    .note-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .note-form {
+      margin-top: 12px;
+    }
+    
+    .note-form textarea {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+      font-family: inherit;
+    }
+    
+    .note-form-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: #0b1220;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
+      opacity: 0;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+      z-index: 2000;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    /* Responsive */
+    @media (min-width: 768px) {
+      .wrap {
+        padding: 18px;
+      }
+      
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .client-actions {
+        flex-wrap: nowrap;
+      }
+      
+      .note-form-actions {
+        flex-wrap: nowrap;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .supervisor-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">Recovery Biometrics</div>
+    <div class="account-switcher">
+      <button class="account-btn" id="accountBtn">
+        <span id="currentAccountName">Dr. Sarah Chen</span>
+        <span>▼</span>
+      </button>
+      <div class="account-dropdown" id="accountDropdown">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap" id="app">
+    <!-- Content rendered by JS -->
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================================================
+    // DATA STRUCTURES
+    // ============================================================================
+    
+    const accounts = [
+      {id: 'vp', name: 'Dr. Sarah Chen', role: 'VP of Therapy'},
+      {id: 'jane', name: 'Jane Martinez', role: 'Clinical Supervisor'},
+      {id: 'michael', name: 'Michael Torres', role: 'Clinical Supervisor'},
+      {id: 'lisa', name: 'Lisa Wang', role: 'Clinical Supervisor'},
+      {id: 'james', name: 'James Kim', role: 'Clinical Supervisor'}
+    ];
+    
+    let currentAccount = 'vp';
+    let currentView = 'vp-dashboard'; // 'vp-dashboard', 'supervisor-caseload', 'client-detail'
+    let currentSupervisor = null;
+    let currentClient = null;
+    
+    const supervisors = {
+      jane: {
+        name: 'Jane Martinez',
+        title: 'Clinical Supervisor',
+        clients: ['A17', 'B23', 'E45', 'F67', 'G89', 'C92', 'H12', 'D04', 'I34', 'J56', 'K78', 'L90', 'M11', 'N22', 'O33', 'P44', 'Q55', 'R66', 'S77', 'T88', 'U99', 'V00'],
+        lastActive: Date.now() - 2 * 60 * 60 * 1000
+      },
+      michael: {
+        name: 'Michael Torres',
+        title: 'Clinical Supervisor',
+        clients: ['W11', 'X22', 'Y33', 'Z44', 'AA55', 'BB66', 'CC77', 'DD88', 'EE99', 'FF00', 'GG11', 'HH22', 'II33', 'JJ44', 'KK55', 'LL66', 'MM77', 'NN88'],
+        lastActive: Date.now() - 45 * 60 * 1000
+      },
+      lisa: {
+        name: 'Lisa Wang',
+        title: 'Clinical Supervisor',
+        clients: ['OO99', 'PP00', 'QQ11', 'RR22', 'SS33', 'TT44', 'UU55', 'VV66', 'WW77', 'XX88', 'YY99', 'ZZ00', 'AAA1', 'BBB2', 'CCC3'],
+        lastActive: Date.now() - 24 * 60 * 60 * 1000
+      },
+      james: {
+        name: 'James Kim',
+        title: 'Clinical Supervisor',
+        clients: ['DDD4', 'EEE5', 'FFF6', 'GGG7', 'HHH8', 'III9', 'JJJ0', 'KKK1', 'LLL2', 'MMM3', 'NNN4', 'OOO5'],
+        lastActive: Date.now() - 3 * 60 * 60 * 1000
+      }
+    };
+    
+    // Sample client data
+    const sampleEntries = {
+      baseline: "Entry documents high participation and cooperative tone. Focus is on objectives and near-term steps. Notes describe responsiveness and willingness to follow through.",
+      declining1: "Entry notes increased strain due to scheduling pressure. Participation remains present but less spontaneous. Barriers are mentioned more often than in baseline.",
+      declining2: "Entry describes frustration with the process and reduced engagement. Tone becomes more transactional. Follow-through is less clear and responsiveness decreases.",
+      declining3: "Entry notes minimal participation unless prompted. External constraints dominate discussion. Forward movement slows and priorities shift toward immediate demands.",
+      stable: "Entry documents continued engagement and steady participation. Client remains responsive and focused on treatment objectives."
+    };
+    
+    const clientData = {};
+    
+    // Initialize client data
+    Object.keys(supervisors).forEach(supId => {
+      supervisors[supId].clients.forEach((clientId, idx) => {
+        let status, changes, entries;
+        
+        // First 5 clients are "needs review"
+        if (idx < 5) {
+          status = 'needsReview';
+          changes = ['Participation ↓', 'Forward movement ↓', 'External constraints ↑'];
+          entries = [
+            sampleEntries.baseline,
+            sampleEntries.baseline,
+            sampleEntries.declining1,
+            sampleEntries.declining2,
+            sampleEntries.declining3,
+            sampleEntries.declining3
+          ];
+        }
+        // Next 2 are "watching"
+        else if (idx < 7) {
+          status = 'watching';
+          changes = ['Uncertainty ↑'];
+          entries = [
+            sampleEntries.baseline,
+            sampleEntries.baseline,
+            sampleEntries.stable,
+            sampleEntries.declining1,
+            sampleEntries.stable,
+            sampleEntries.stable
+          ];
+        }
+        // Rest are stable
+        else {
+          status = 'stable';
+          changes = [];
+          entries = [
+            sampleEntries.baseline,
+            sampleEntries.baseline,
+            sampleEntries.stable,
+            sampleEntries.stable,
+            sampleEntries.stable,
+            sampleEntries.stable
+          ];
+        }
+        
+        const lastSession = Date.now() - (Math.random() * 5 + 1) * 24 * 60 * 60 * 1000;
+        const lastReviewed = Math.random() > 0.3 ? Date.now() - (Math.random() * 10 + 1) * 24 * 60 * 60 * 1000 : null;
+        
+        clientData[clientId] = {
+          status,
+          changes,
+          lastSession,
+          lastReviewed,
+          entries,
+          notes: []
+        };
+      });
+    });
+    
+    // Add some sample notes
+    clientData['B23'].notes = [
+      {date: Date.now() - 5 * 24 * 60 * 60 * 1000, author: 'Jane Martinez', text: 'Client showing early signs of disengagement. Flagged for closer monitoring.'}
+    ];
+    
+    // ============================================================================
+    // LEXICON & INDICATOR COMPUTATION (from original demo)
+    // ============================================================================
+    
+    const LEX = {
+      part_pos: ["participation", "engaged", "responsive", "cooperative", "collaborative", "asked", "shared", "follow through", "willing"],
+      part_neg: ["minimal", "withdrawn", "disengaged", "brief", "short answers", "unresponsive", "resistant", "checked out"],
+      fwd_pos: ["plan", "next steps", "follow up", "objective", "goal", "action", "commit", "progress", "schedule"],
+      fwd_neg: ["stuck", "no plan", "unclear", "same issues", "repeated", "not moving", "skeptical", "not helpful"],
+      unc_pos: ["maybe", "unsure", "not sure", "uncertain", "on the fence", "questioned", "doubt", "mixed", "skeptical"],
+      own_pos: ["i will", "i did", "i chose", "i decided", "i can", "i plan", "i want", "taking responsibility"],
+      own_neg: ["made me", "forced", "had to", "no choice", "can't", "won't let me", "not my fault"],
+      ext_pos: ["schedule", "transportation", "court", "work", "money", "rules", "policy", "system", "staff", "insurance", "timeline", "requirements", "barrier", "constraint"]
+    };
+    
+    function countHits(text, phrases) {
+      const t = (text || "").toLowerCase();
+      let c = 0;
+      for (const p of phrases) {
+        if (t.includes(p)) c += 1;
+      }
+      return c;
+    }
+    
+    function clamp(n, lo, hi) {
+      return Math.max(lo, Math.min(hi, n));
+    }
+    
+    function score01(raw, cap = 6) {
+      return clamp(raw / cap, 0, 1);
+    }
+    
+    function computeEntryIndicators(text) {
+      const x = (text || '').trim();
+      if (!x) {
+        return {participation: 0.5, forward: 0.5, uncertainty: 0.25, ownership: 0.5, external: 0.25};
+      }
+      
+      const pp = countHits(x, LEX.part_pos);
+      const pn = countHits(x, LEX.part_neg);
+      const fp = countHits(x, LEX.fwd_pos);
+      const fn = countHits(x, LEX.fwd_neg);
+      const up = countHits(x, LEX.unc_pos);
+      const op = countHits(x, LEX.own_pos);
+      const on = countHits(x, LEX.own_neg);
+      const ep = countHits(x, LEX.ext_pos);
+      
+      const participation = clamp(0.5 + (pp - pn) * 0.10, 0, 1);
+      const forward = clamp(0.5 + (fp - fn) * 0.10, 0, 1);
+      const uncertainty = clamp(0.15 + up * 0.12, 0, 1);
+      const ownership = clamp(0.5 + (op - on) * 0.08, 0, 1);
+      const external = clamp(0.15 + score01(ep, 10) * 0.85, 0, 1);
+      
+      return {participation, forward, uncertainty, ownership, external};
+    }
+    
+    function mean(arr) {
+      return arr.reduce((a, b) => a + b, 0) / (arr.length || 1);
+    }
+    
+    function summarizeDelta(baseAvg, recentAvg, direction) {
+      const delta = recentAvg - baseAvg;
+      const sustained = Math.abs(delta) >= 0.12;
+      
+      let arrow = '↔';
+      let cls = 'flat';
+      
+      if (direction === 'down') {
+        if (delta <= -0.12) {
+          arrow = '↓';
+          cls = 'down';
+        }
+        if (!sustained) {
+          arrow = '↔';
+          cls = 'flat';
+        }
+      } else {
+        if (delta >= 0.12) {
+          arrow = '↑';
+          cls = 'up';
+        }
+        if (!sustained) {
+          arrow = '↔';
+          cls = 'flat';
+        }
+      }
+      return {arrow, cls, sustained};
+    }
+    
+    // ============================================================================
+    // SPARKLINE DRAWING (from original demo)
+    // ============================================================================
+    
+    function drawSpark(metricId, values) {
+      const w = 300, h = 60;
+      const left = 6, right = 6, top = 6, bottom = 10;
+      const innerW = w - left - right;
+      const innerH = h - top - bottom;
+      
+      const n = values.length;
+      const step = innerW / (n - 1);
+      
+      const pts = values.map((v, i) => {
+        const x = left + i * step;
+        const y = top + (1 - clamp(v, 0, 1)) * innerH;
+        return {x, y};
+      });
+      
+      const d = pts.map((p, i) => (i === 0 ? `M ${p.x.toFixed(1)} ${p.y.toFixed(1)}` : `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`)).join(' ');
+      const line = document.getElementById(`line-${metricId}`);
+      if (line) line.setAttribute('d', d);
+      
+      const dots = document.getElementById(`dots-${metricId}`);
+      if (dots) {
+        dots.innerHTML = '';
+        pts.forEach(p => {
+          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          c.setAttribute('class', 'dot');
+          c.setAttribute('cx', p.x);
+          c.setAttribute('cy', p.y);
+          c.setAttribute('r', 3.2);
+          dots.appendChild(c);
+        });
+      }
+    }
+    
+    // ============================================================================
+    // UTILITIES
+    // ============================================================================
+    
+    function formatDate(timestamp) {
+      if (!timestamp) return 'Never';
+      const d = new Date(timestamp);
+      const now = Date.now();
+      const diff = now - timestamp;
+      
+      if (diff < 60 * 60 * 1000) {
+        const mins = Math.floor(diff / (60 * 1000));
+        return `${mins}m ago`;
+      } else if (diff < 24 * 60 * 60 * 1000) {
+        const hrs = Math.floor(diff / (60 * 60 * 1000));
+        return `${hrs}h ago`;
+      } else {
+        const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+        return `${days}d ago`;
+      }
+    }
+    
+    function formatFullDate(timestamp) {
+      if (!timestamp) return 'Never';
+      const d = new Date(timestamp);
+      return d.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
+    }
+    
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+    
+    function getClientStats(supervisor) {
+      const clients = supervisor.clients;
+      let needsReview = 0, watching = 0, stable = 0;
+      
+      clients.forEach(cId => {
+        const c = clientData[cId];
+        if (c.status === 'needsReview') needsReview++;
+        else if (c.status === 'watching') watching++;
+        else stable++;
+      });
+      
+      return {total: clients.length, needsReview, watching, stable};
+    }
+    
+    function getTeamStats() {
+      let totalClients = 0, totalNeedsReview = 0, totalWatching = 0;
+      
+      Object.keys(supervisors).forEach(sId => {
+        const stats = getClientStats(supervisors[sId]);
+        totalClients += stats.total;
+        totalNeedsReview += stats.needsReview;
+        totalWatching += stats.watching;
+      });
+      
+      return {
+        supervisors: Object.keys(supervisors).length,
+        clients: totalClients,
+        needsReview: totalNeedsReview,
+        watching: totalWatching,
+        stable: totalClients - totalNeedsReview - totalWatching
+      };
+    }
+    
+    function isNeglected(client) {
+      if (!client.lastReviewed) return client.status !== 'needsReview'; // Only warn if not urgent
+      const daysSinceReview = (Date.now() - client.lastReviewed) / (24 * 60 * 60 * 1000);
+      
+      if (client.status === 'needsReview' && daysSinceReview > 3) return true;
+      if (client.status === 'watching' && daysSinceReview > 7) return true;
+      if (client.status === 'stable' && daysSinceReview > 7) return true;
+      
+      return false;
+    }
+    
+    // ============================================================================
+    // ACCOUNT SWITCHING
+    // ============================================================================
+    
+    function initAccountSwitcher() {
+      const dropdown = document.getElementById('accountDropdown');
+      dropdown.innerHTML = accounts.map(acc => `
+        <div class="account-dropdown-item ${acc.id === currentAccount ? 'active' : ''}" data-account="${acc.id}">
+          <div>${acc.name}</div>
+          <div class="role">${acc.role}</div>
+        </div>
+      `).join('');
+      
+      document.getElementById('accountBtn').onclick = (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('show');
+      };
+      
+      document.addEventListener('click', () => {
+        dropdown.classList.remove('show');
+      });
+      
+      dropdown.querySelectorAll('.account-dropdown-item').forEach(item => {
+        item.onclick = (e) => {
+          e.stopPropagation();
+          const accountId = item.dataset.account;
+          switchAccount(accountId);
+        };
+      });
+    }
+    
+    function switchAccount(accountId) {
+      currentAccount = accountId;
+      const account = accounts.find(a => a.id === accountId);
+      document.getElementById('currentAccountName').textContent = account.name;
+      document.getElementById('accountDropdown').classList.remove('show');
+      
+      // Switch view based on role
+      if (accountId === 'vp') {
+        currentView = 'vp-dashboard';
+      } else {
+        currentView = 'supervisor-caseload';
+        currentSupervisor = accountId;
+      }
+      
+      render();
+      initAccountSwitcher(); // Refresh to update active state
+    }
+    
+    // ============================================================================
+    // RENDERING
+    // ============================================================================
+    
+    function render() {
+      const app = document.getElementById('app');
+      
+      if (currentView === 'vp-dashboard') {
+        app.innerHTML = renderVPDashboard();
+        attachVPEventListeners();
+      } else if (currentView === 'supervisor-caseload') {
+        app.innerHTML = renderSupervisorCaseload();
+        attachSupervisorEventListeners();
+      } else if (currentView === 'client-detail') {
+        app.innerHTML = renderClientDetail();
+        attachClientDetailEventListeners();
+      }
+    }
+    
+    function renderVPDashboard() {
+      const stats = getTeamStats();
+      const monthlyPrice = stats.clients * 8;
+      
+      return `
+        <div class="team-overview">
+          <h2>📊 Team Overview - PHP/IOP Program</h2>
+          <div class="team-stats">
+            <div class="team-stat">
+              <strong>${stats.supervisors}</strong>
+              Supervisors
+            </div>
+            <div class="team-stat">
+              <strong>${stats.clients}</strong>
+              Total Clients
+            </div>
+            <div class="team-stat">
+              <strong>${stats.needsReview}</strong>
+              Need Review
+            </div>
+            <div class="team-stat">
+              <strong>${stats.watching}</strong>
+              Watching
+            </div>
+            <div class="team-stat">
+              <strong>\$${monthlyPrice.toLocaleString()}/mo</strong>
+              Current Cost
+            </div>
+          </div>
+          <div class="risk-dist">
+            <div class="risk-badge">🔴 ${stats.needsReview} High</div>
+            <div class="risk-badge">🟡 ${stats.watching} Medium</div>
+            <div class="risk-badge">🟢 ${stats.stable} Stable</div>
+          </div>
+          <div style="margin-top: 12px; font-size: 12px; opacity: 0.85;">
+            Pricing: ${stats.clients} clients × \$8/client/month = \$${monthlyPrice.toLocaleString()}
+          </div>
+        </div>
+        
+        <div class="supervisor-cards-grid">
+          ${Object.keys(supervisors).map(sId => {
+            const sup = supervisors[sId];
+            const stats = getClientStats(sup);
+            
+            return `
+              <div class="supervisor-card">
+                <div class="supervisor-header">
+                  <div>
+                    <div class="supervisor-name">${sup.name}</div>
+                    <div class="supervisor-title">${sup.title}</div>
+                  </div>
+                </div>
+                
+                <div class="supervisor-stats">
+                  <div>${stats.total} clients</div>
+                  ${stats.needsReview > 0 ? `<span class="stat-badge red">🔴 ${stats.needsReview}</span>` : ''}
+                  ${stats.watching > 0 ? `<span class="stat-badge yellow">🟡 ${stats.watching}</span>` : ''}
+                  ${stats.stable > 0 ? `<span class="stat-badge green">🟢 ${stats.stable}</span>` : ''}
+                </div>
+                
+                <div class="last-active">Last active: ${formatDate(sup.lastActive)}</div>
+                
+                <button class="btn full" data-supervisor="${sId}">View Dashboard</button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+    
+    function attachVPEventListeners() {
+      document.querySelectorAll('[data-supervisor]').forEach(btn => {
+        btn.onclick = () => {
+          const supId = btn.dataset.supervisor;
+          currentSupervisor = supId;
+          currentView = 'supervisor-caseload';
+          render();
+        };
+      });
+    }
+    
+    function renderSupervisorCaseload() {
+      const sup = supervisors[currentSupervisor];
+      const stats = getClientStats(sup);
+      
+      const needsReviewClients = sup.clients.filter(cId => clientData[cId].status === 'needsReview');
+      const watchingClients = sup.clients.filter(cId => clientData[cId].status === 'watching');
+      const stableClients = sup.clients.filter(cId => clientData[cId].status === 'stable');
+      
+      return `
+        ${currentAccount === 'vp' ? `<div class="back-btn" id="backToVP">← Back to VP View</div>` : ''}
+        
+        <div class="card">
+          <h2 style="margin: 0 0 8px; font-size: 18px;">${sup.name}'s Caseload</h2>
+          <div class="muted">${stats.total} clients • Last synced: ${formatDate(Date.now() - 5 * 60 * 1000)}</div>
+        </div>
+        
+        ${renderClientSection('🔴 NEEDS REVIEW', stats.needsReview, needsReviewClients, true)}
+        ${renderClientSection('🟡 WATCHING', stats.watching, watchingClients, stats.needsReview === 0)}
+        ${renderClientSection('🟢 STABLE', stats.stable, stableClients, false)}
+      `;
+    }
+    
+    function renderClientSection(title, count, clientIds, defaultOpen) {
+      return `
+        <div class="card">
+          <div class="section-header" data-section="${title}">
+            <div class="section-title">
+              <span>${title}</span>
+              <span class="section-count">${count}</span>
+            </div>
+            <span class="section-toggle">${defaultOpen ? '▼' : '▶'}</span>
+          </div>
+          <div class="section-content ${defaultOpen ? 'show' : ''}">
+            ${clientIds.map(cId => renderClientCard(cId)).join('')}
+          </div>
+        </div>
+      `;
+    }
+    
+    function renderClientCard(clientId) {
+      const client = clientData[clientId];
+      const neglected = isNeglected(client);
+      const icon = client.status === 'needsReview' ? '⚠️' : client.status === 'watching' ? '👁️' : '✓';
+      
+      return `
+        <div class="client-card">
+          <div class="client-header">
+            <div class="client-id">${icon} Client ${clientId}</div>
+          </div>
+          
+          ${client.changes.length > 0 ? `<div class="client-changes">${client.changes.join(' • ')}</div>` : ''}
+          
+          <div class="client-meta">
+            <div>Last session: ${formatDate(client.lastSession)}</div>
+            <div class="${neglected ? 'review-warning' : ''}">
+              Last reviewed: ${formatDate(client.lastReviewed)}
+              ${neglected ? ' ⚠️' : ''}
+            </div>
+          </div>
+          
+          <div class="client-actions">
+            <button class="btn" data-client="${clientId}">Review Now</button>
+            <button class="btn success" data-mark="${clientId}">Mark ✓</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    function attachSupervisorEventListeners() {
+      if (document.getElementById('backToVP')) {
+        document.getElementById('backToVP').onclick = () => {
+          currentView = 'vp-dashboard';
+          render();
+        };
+      }
+      
+      document.querySelectorAll('.section-header').forEach(header => {
+        header.onclick = () => {
+          const content = header.nextElementSibling;
+          const toggle = header.querySelector('.section-toggle');
+          content.classList.toggle('show');
+          toggle.textContent = content.classList.contains('show') ? '▼' : '▶';
+        };
+      });
+      
+      document.querySelectorAll('[data-client]').forEach(btn => {
+        btn.onclick = () => {
+          currentClient = btn.dataset.client;
+          currentView = 'client-detail';
+          render();
+        };
+      });
+      
+      document.querySelectorAll('[data-mark]').forEach(btn => {
+        btn.onclick = () => {
+          const clientId = btn.dataset.mark;
+          clientData[clientId].lastReviewed = Date.now();
+          showToast(`✓ Client ${clientId} marked as reviewed`);
+          render();
+        };
+      });
+    }
+    
+    function renderClientDetail() {
+      const client = clientData[currentClient];
+      const entries = client.entries;
+      
+      // Compute indicators
+      const ind = entries.map(computeEntryIndicators);
+      const series = {
+        participation: ind.map(v => v.participation),
+        forward: ind.map(v => v.forward),
+        uncertainty: ind.map(v => v.uncertainty),
+        ownership: ind.map(v => v.ownership),
+        external: ind.map(v => v.external),
+      };
+      
+      const baseIdx = [0, 1];
+      const recentIdx = [3, 4, 5];
+      const base = (k) => mean(baseIdx.map(i => series[k][i]));
+      const recent = (k) => mean(recentIdx.map(i => series[k][i]));
+      
+      const dPar = summarizeDelta(base('participation'), recent('participation'), 'down');
+      const dFwd = summarizeDelta(base('forward'), recent('forward'), 'down');
+      const dUnc = summarizeDelta(base('uncertainty'), recent('uncertainty'), 'up');
+      const dOwn = summarizeDelta(base('ownership'), recent('ownership'), 'down');
+      const dExt = summarizeDelta(base('external'), recent('external'), 'up');
+      
+      const flags = [];
+      if (dPar.arrow === '↓') flags.push('Participation ↓');
+      if (dFwd.arrow === '↓') flags.push('Forward movement ↓');
+      if (dUnc.arrow === '↑') flags.push('Uncertainty ↑');
+      if (dOwn.arrow === '↓') flags.push('Ownership ↓');
+      if (dExt.arrow === '↑') flags.push('External constraints ↑');
+      
+      const oneParagraph = flags.length
+        ? 'Recent entries describe reduced participation and less forward movement compared to baseline, with increasing emphasis on external constraints. This is a direction-of-change summary only and is intended to guide human review.'
+        : 'No sustained change detected across recent entries compared to baseline. Continue routine review; no additional action implied.';
+      
+      const parts = flags.length ? {
+        current: "Recent entries describe reduced participation and less forward movement compared to baseline.",
+        background: "Earlier entries reflect higher responsiveness and clearer objectives, establishing a stronger baseline.",
+        triggers: "Records increasingly reference timeline pressure and practical constraints that became more prominent over time.",
+        maintaining: "Recurring constraints and unresolved barriers appear to be limiting follow-through across entries.",
+        supports: "Continued presence across entries and earlier responsiveness suggest capacity for re-engagement when barriers are addressed.",
+        patterns: "Shift from collaborative tone toward transactional or brief engagement is repeated in later entries.",
+        preferences: "Recent records emphasize immediate demands and requirements over longer-horizon objectives.",
+        direction: "Consider targeted human review to clarify constraints, reset objectives, and agree on a near-term plan."
+      } : {
+        current: "No sustained change detected across recent entries compared to baseline.",
+        background: "Baseline entries establish a stable reference point for this case.",
+        triggers: "No single theme appears to be driving change based on these entries.",
+        maintaining: "No recurring barrier pattern stands out in recent entries.",
+        supports: "Existing supports appear consistent across entries.",
+        patterns: "Narrative tone appears consistent across entries.",
+        preferences: "Priorities appear stable across entries.",
+        direction: "Continue routine review; no additional action implied."
+      };
+      
+      return `
+        <div class="back-btn" id="backToCaseload">← Back to Caseload</div>
+        
+        <div class="card">
+          <h2 style="margin: 0 0 4px; font-size: 18px;">Client ${currentClient} - Review</h2>
+          <div class="muted">Last session: ${formatDate(client.lastSession)} • Last reviewed: ${formatDate(client.lastReviewed)}</div>
+          <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn success" id="markReviewed">Mark as Reviewed</button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="tabs">
+            <div class="tab active" data-tab="overview">Overview</div>
+            <div class="tab" data-tab="trends">Trends</div>
+            <div class="tab" data-tab="summary">Summary</div>
+            <div class="tab" data-tab="notes">Notes</div>
+          </div>
+          
+          <div class="tab-panel active" id="overview">
+            <div class="metric">
+              <div class="metric-head">
+                <div>
+                  <div class="metric-name">What's been changing</div>
+                  <div class="muted">Relative to baseline across recent entries</div>
+                </div>
+                <div class="muted">human review</div>
+              </div>
+              <div class="chips">
+                ${flags.length === 0 ? '<div class="chip ok">No sustained change detected</div>' : ''}
+                ${flags.map(f => {
+                  const cls = f.includes('↓') ? 'warn' : f.includes('↑') ? 'up' : '';
+                  return `<div class="chip ${cls}">${f}</div>`;
+                }).join('')}
+              </div>
+              <div class="small" style="margin-top: 10px;">This is a direction-of-change summary only. No conclusions implied.</div>
+            </div>
+            
+            <div style="margin-top: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">One-paragraph summary</h3>
+              <p class="muted">${oneParagraph}</p>
+              <div class="small">No source text shown • Human review required</div>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="trends">
+            ${renderTrendsPanel(series, dPar, dFwd, dUnc, dOwn, dExt)}
+          </div>
+          
+          <div class="tab-panel" id="summary">
+            ${renderSummaryPanel(parts)}
+          </div>
+          
+          <div class="tab-panel" id="notes">
+            ${renderNotesPanel(currentClient)}
+          </div>
+        </div>
+      `;
+    }
+    
+    function renderTrendsPanel(series, dPar, dFwd, dUnc, dOwn, dExt) {
+      return `
+        <div class="small" style="margin-bottom: 8px;">Trendlines are case-relative comparisons across entries.</div>
+        
+        ${renderMetric('participation', 'Participation', dPar, series.participation)}
+        ${renderMetric('forward', 'Forward Movement', dFwd, series.forward)}
+        ${renderMetric('uncertainty', 'Uncertainty', dUnc, series.uncertainty)}
+        ${renderMetric('ownership', 'Ownership', dOwn, series.ownership)}
+        ${renderMetric('external', 'External Constraints', dExt, series.external)}
+      `;
+    }
+    
+    function renderMetric(id, name, delta, values) {
+      return `
+        <div class="metric">
+          <div class="metric-head">
+            <div>
+              <div class="metric-name">${name}</div>
+              <div class="metric-sub ${delta.cls}" id="sub-${id}">
+                ${delta.arrow === '↔' ? '↔ stable vs baseline' : `${delta.arrow} sustained change vs baseline`}
+              </div>
+            </div>
+            <div class="muted">relative to baseline</div>
+          </div>
+          <svg class="spark" viewBox="0 0 300 60">
+            <line class="axis" x1="0" y1="50" x2="300" y2="50"></line>
+            <path class="line" id="line-${id}" d=""></path>
+            <g id="dots-${id}"></g>
+          </svg>
+          <div class="legend"><span>Entry 1</span><span>6</span></div>
+        </div>
+      `;
+    }
+    
+    function renderSummaryPanel(parts) {
+      return `
+        <h3 style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Structured review summary</h3>
+        <div class="small">Organized for human review. Describes patterns across entries without quoting source text.</div>
+        
+        <div class="summary-grid">
+          <div class="facet"><h4>Current snapshot</h4><p>${parts.current}</p></div>
+          <div class="facet"><h4>Background factors</h4><p>${parts.background}</p></div>
+          <div class="facet"><h4>Recent triggers</h4><p>${parts.triggers}</p></div>
+          <div class="facet"><h4>What keeps it going</h4><p>${parts.maintaining}</p></div>
+          <div class="facet"><h4>Supports / strengths</h4><p>${parts.supports}</p></div>
+          <div class="facet"><h4>Repeated patterns</h4><p>${parts.patterns}</p></div>
+          <div class="facet"><h4>Priorities / preferences</h4><p>${parts.preferences}</p></div>
+          <div class="facet"><h4>Working direction</h4><p>${parts.direction}</p></div>
+        </div>
+      `;
+    }
+    
+    function renderNotesPanel(clientId) {
+      const client = clientData[clientId];
+      const sup = supervisors[currentSupervisor];
+      
+      return `
+        <div class="notes-section">
+          <h3 style="margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Supervisor Notes</h3>
+          
+          ${client.notes.length === 0 ? '<div class="muted">No notes yet.</div>' : ''}
+          
+          ${client.notes.map((note, idx) => `
+            <div class="note-card">
+              <div class="note-header">
+                <div class="note-meta">${formatFullDate(note.date)} - ${note.author}</div>
+              </div>
+              <div class="note-text">${note.text}</div>
+              <div class="note-actions">
+                <button class="btn copy" data-copy-note="${idx}">Copy to EHR</button>
+                <button class="btn ghost" data-delete-note="${idx}">Delete</button>
+              </div>
+            </div>
+          `).join('')}
+          
+          <div class="note-form">
+            <textarea id="newNoteText" placeholder="Add a note about this client's progress, barriers, or follow-up needed..."></textarea>
+            <div class="note-form-actions">
+              <button class="btn" id="saveNote">Save Note & Mark Reviewed</button>
+              <button class="btn copy" id="saveAndCopy">Save & Copy to EHR</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    
+    function attachClientDetailEventListeners() {
+      document.getElementById('backToCaseload').onclick = () => {
+        currentView = 'supervisor-caseload';
+        render();
+      };
+      
+      document.getElementById('markReviewed').onclick = () => {
+        clientData[currentClient].lastReviewed = Date.now();
+        showToast(`✓ Client ${currentClient} marked as reviewed`);
+        render();
+      };
+      
+      // Tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.tab).classList.add('active');
+          
+          // Draw sparklines when trends tab is shown
+          if (tab.dataset.tab === 'trends') {
+            const client = clientData[currentClient];
+            const ind = client.entries.map(computeEntryIndicators);
+            const series = {
+              participation: ind.map(v => v.participation),
+              forward: ind.map(v => v.forward),
+              uncertainty: ind.map(v => v.uncertainty),
+              ownership: ind.map(v => v.ownership),
+              external: ind.map(v => v.external),
+            };
+            
+            setTimeout(() => {
+              drawSpark('participation', series.participation);
+              drawSpark('forward', series.forward);
+              drawSpark('uncertainty', series.uncertainty);
+              drawSpark('ownership', series.ownership);
+              drawSpark('external', series.external);
+            }, 10);
+          }
+        };
+      });
+      
+      // Notes
+      const saveNote = (copyToEHR = false) => {
+        const text = document.getElementById('newNoteText').value.trim();
+        if (!text) return;
+        
+        const sup = supervisors[currentSupervisor];
+        const note = {
+          date: Date.now(),
+          author: sup.name,
+          text: text
+        };
+        
+        clientData[currentClient].notes.push(note);
+        clientData[currentClient].lastReviewed = Date.now();
+        
+        if (copyToEHR) {
+          copyNoteToEHR(currentClient, text, note.date, note.author);
+        }
+        
+        showToast(`✓ Note saved${copyToEHR ? ' and copied to clipboard' : ''}`);
+        render();
+      };
+      
+      document.getElementById('saveNote').onclick = () => saveNote(false);
+      document.getElementById('saveAndCopy').onclick = () => saveNote(true);
+      
+      document.querySelectorAll('[data-copy-note]').forEach(btn => {
+        btn.onclick = () => {
+          const idx = parseInt(btn.dataset.copyNote);
+          const note = clientData[currentClient].notes[idx];
+          copyNoteToEHR(currentClient, note.text, note.date, note.author);
+        };
+      });
+      
+      document.querySelectorAll('[data-delete-note]').forEach(btn => {
+        btn.onclick = () => {
+          const idx = parseInt(btn.dataset.deleteNote);
+          clientData[currentClient].notes.splice(idx, 1);
+          showToast('Note deleted');
+          render();
+        };
+      });
+    }
+    
+    function copyNoteToEHR(clientId, noteText, noteDate, author) {
+      const formatted = `Recovery Biometrics Supervisor Note - Client ${clientId}
+Date: ${formatFullDate(noteDate)}
+Supervisor: ${author}
+
+${noteText}`;
+      
+      navigator.clipboard.writeText(formatted).then(() => {
+        showToast('✓ Note copied to clipboard - paste into EHR');
+      }).catch(() => {
+        showToast('Unable to copy - please copy manually');
+      });
+    }
+    
+    // ============================================================================
+    // INITIALIZE
+    // ============================================================================
+    
+    initAccountSwitcher();
+    render();
+  </script>
+</body>
+</html>
