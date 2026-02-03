@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recovery Biometrics - Supervisor Dashboard</title>
+  <title>Recovery Biometrics - Clinical Dashboard</title>
 
   <style>
     :root{
@@ -98,243 +98,185 @@
       display: block;
     }
     
-    .account-dropdown-item {
+    .account-option {
       padding: 10px 14px;
       cursor: pointer;
-      font-size: 13px;
       border-bottom: 1px solid var(--line);
+      font-size: 13px;
     }
     
-    .account-dropdown-item:last-child {
+    .account-option:last-child {
       border-bottom: none;
     }
     
-    .account-dropdown-item:hover {
+    .account-option:hover {
       background: var(--soft2);
     }
     
-    .account-dropdown-item.active {
-      background: var(--accent);
-      color: #fff;
+    .account-option.active {
+      background: var(--soft);
+      font-weight: 600;
+    }
+    
+    /* Team overview */
+    .team-overview {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .team-overview h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
       font-weight: 700;
     }
     
-    .account-dropdown-item .role {
-      font-size: 11px;
-      opacity: 0.7;
-      margin-top: 2px;
+    .team-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
     }
     
-    /* Cards */
-    .card {
+    .team-stat {
+      text-align: center;
+    }
+    
+    .team-stat strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .team-stat span {
+      font-size: 12px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .risk-dist {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .risk-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    /* Supervisor/Therapist cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .person-card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 14px;
+      border-radius: 12px;
+      padding: 20px;
     }
     
-    .card h3 {
-      margin: 0 0 8px;
+    .person-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    
+    .person-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .person-title {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .person-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .stat-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
       font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    }
+    
+    .stat-badge.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .stat-badge.yellow {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .stat-badge.green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .last-active {
+      font-size: 12px;
       color: var(--muted);
+      margin-bottom: 12px;
     }
     
-    .muted {
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height: 1.55;
-    }
-    
-    .small {
-      font-size: 11px;
-      color: #64748b;
-      line-height: 1.45;
-    }
-    
-    /* Buttons */
     .btn {
       background: var(--accent);
-      color: #fff;
+      color: white;
       border: none;
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
       cursor: pointer;
-      font-size: 12px;
-      text-align: center;
-      display: inline-block;
-      text-decoration: none;
+      transition: opacity 0.2s;
     }
     
     .btn:hover {
       opacity: 0.9;
     }
     
-    .btn.secondary {
-      background: #fff;
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-    
-    .btn.ghost {
-      background: var(--soft2);
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-    
-    .btn.warn {
-      background: #fff7ed;
-      color: var(--warn);
-      border: 1px solid #fed7aa;
-    }
-    
-    .btn.success {
-      background: #f0fdf4;
-      color: var(--ok);
-      border: 1px solid #bbf7d0;
-    }
-    
-    .btn.copy {
-      background: var(--teal);
-      color: #fff;
-    }
-    
     .btn.full {
       width: 100%;
     }
     
-    /* Back button */
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      margin-bottom: 12px;
+    .btn.secondary {
+      background: var(--soft);
+      color: var(--ink);
     }
     
-    .back-btn:hover {
-      text-decoration: underline;
+    /* Client cards */
+    .client-section {
+      margin-bottom: 24px;
     }
     
-    /* VP Dashboard */
-    .team-overview {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      padding: 20px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-    }
-    
-    .team-overview h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
-    }
-    
-    .team-stats {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    
-    .team-stat {
-      font-size: 14px;
-    }
-    
-    .team-stat strong {
-      font-size: 24px;
-      display: block;
-      margin-bottom: 2px;
-    }
-    
-    .risk-dist {
-      display: flex;
-      gap: 12px;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-    
-    .risk-badge {
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.2);
-      font-weight: 600;
-    }
-    
-    /* Supervisor cards */
-    .supervisor-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    
-    .supervisor-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-      gap: 10px;
-    }
-    
-    .supervisor-name {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0 0 2px;
-    }
-    
-    .supervisor-title {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    
-    .supervisor-stats {
-      display: flex;
-      gap: 10px;
-      margin: 10px 0;
-      font-size: 13px;
-    }
-    
-    .stat-badge {
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-    }
-    
-    .stat-badge.red {
-      background: #fef2f2;
-      color: var(--danger);
-    }
-    
-    .stat-badge.yellow {
-      background: #fefce8;
-      color: #a16207;
-    }
-    
-    .stat-badge.green {
-      background: #f0fdf4;
-      color: var(--ok);
-    }
-    
-    .last-active {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-    
-    /* Client list */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 12px 0;
       cursor: pointer;
       user-select: none;
     }
@@ -342,355 +284,300 @@
     .section-title {
       font-size: 14px;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
     }
     
     .section-count {
       background: var(--soft);
-      padding: 2px 8px;
-      border-radius: 999px;
+      padding: 4px 10px;
+      border-radius: 12px;
       font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
     }
     
-    .section-content {
+    .client-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    
+    .client-list.collapsed {
       display: none;
-    }
-    
-    .section-content.show {
-      display: block;
     }
     
     .client-card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 10px;
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
     }
     
-    .client-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-      gap: 10px;
+    .client-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .client-card.urgent {
+      border-left: 4px solid #dc2626;
+    }
+    
+    .client-card.watching {
+      border-left: 4px solid #d97706;
     }
     
     .client-id {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
-    }
-    
-    .client-changes {
-      font-size: 12px;
-      color: var(--muted);
       margin-bottom: 8px;
-      line-height: 1.4;
     }
     
     .client-meta {
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
       margin-bottom: 8px;
     }
     
-    .review-warning {
-      color: var(--warn);
+    .change-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .chip {
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 11px;
       font-weight: 600;
+    }
+    
+    .chip.down {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .chip.up {
+      background: #d1fae5;
+      color: #065f46;
     }
     
     .client-actions {
       display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 6px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 10px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .tab {
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
-      user-select: none;
-      border-radius: 8px 8px 0 0;
-      white-space: nowrap;
-    }
-    
-    .tab.active {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-bottom: none;
-      color: var(--ink);
-    }
-    
-    .tab-panel {
-      display: none;
-    }
-    
-    .tab-panel.active {
-      display: block;
-    }
-    
-    /* Chips */
-    .chips {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    
-    .chip {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--soft2);
-      color: var(--muted);
-    }
-    
-    .chip.warn {
-      border-color: #fed7aa;
-      background: #fff7ed;
-      color: var(--warn);
-    }
-    
-    .chip.ok {
-      border-color: #bbf7d0;
-      background: #f0fdf4;
-      color: var(--ok);
-    }
-    
-    .chip.up {
-      border-color: #fecaca;
-      background: #fef2f2;
-      color: var(--danger);
-    }
-    
-    /* Sparklines */
-    .metric {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 10px;
-      background: #fff;
-    }
-    
-    .metric-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    
-    .metric-name {
-      font-weight: 700;
-      font-size: 13px;
-    }
-    
-    .metric-sub {
-      font-size: 12px;
-      margin-top: 2px;
-    }
-    
-    .metric-sub.down {
-      color: var(--warn);
-      font-weight: 700;
-    }
-    
-    .metric-sub.up {
-      color: var(--danger);
-      font-weight: 700;
-    }
-    
-    .metric-sub.flat {
-      color: var(--ok);
-      font-weight: 700;
-    }
-    
-    .spark {
-      width: 100%;
-      height: 58px;
-      display: block;
-      margin-top: 8px;
-    }
-    
-    .spark .axis {
-      stroke: #e5e7eb;
-      stroke-width: 1;
-    }
-    
-    .spark .line {
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 2.5;
-    }
-    
-    .spark .dot {
-      fill: var(--accent);
-    }
-    
-    .legend {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10.5px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-    
-    /* Structured summary */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 8px;
       margin-top: 10px;
     }
     
-    .facet {
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      flex: 1;
+    }
+    
+    /* Client detail view */
+    .detail-header {
+      background: var(--card);
       border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 10px;
-      background: var(--soft2);
+      padding: 20px;
+      margin-bottom: 20px;
     }
     
-    .facet h4 {
-      margin: 0 0 6px;
+    .detail-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .detail-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--line);
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+    }
+    
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .content-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    
+    .sparkline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .sparkline-item {
+      text-align: center;
+    }
+    
+    .sparkline-label {
       font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #334155;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
     
-    .facet p {
-      margin: 0;
-      color: #0f172a;
-      font-size: 12.5px;
-      line-height: 1.45;
+    .sparkline-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .sparkline-delta {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .delta-up { color: #16a34a; }
+    .delta-down { color: #dc2626; }
+    .delta-neutral { color: var(--muted); }
+    
+    .summary-section {
+      margin-bottom: 24px;
+    }
+    
+    .summary-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    
+    .summary-section p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink);
     }
     
     /* Notes */
-    .notes-section {
-      margin-top: 16px;
+    .note-item {
+      border-bottom: 1px solid var(--line);
+      padding: 16px 0;
     }
     
-    .note-card {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: var(--soft2);
+    .note-item:last-child {
+      border-bottom: none;
     }
     
     .note-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 8px;
-      gap: 10px;
     }
     
     .note-meta {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
     }
     
     .note-text {
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.6;
       margin-bottom: 8px;
     }
     
     .note-actions {
       display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
     
-    .note-form {
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 8px;
       margin-top: 12px;
     }
     
-    .note-form textarea {
-      width: 100%;
-      min-height: 100px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 10px;
+    /* Back button */
+    .back-btn {
+      background: var(--soft);
+      color: var(--ink);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
       font-size: 13px;
-      line-height: 1.5;
-      resize: vertical;
-      font-family: inherit;
-    }
-    
-    .note-form-actions {
-      display: flex;
+      cursor: pointer;
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-      margin-top: 8px;
-      flex-wrap: wrap;
     }
     
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%) translateY(6px);
-      background: #0b1220;
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
-      opacity: 0;
-      transition: opacity 0.18s ease, transform 0.18s ease;
-      pointer-events: none;
-      z-index: 2000;
+    .back-btn:hover {
+      background: var(--line);
     }
     
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    
-    /* Responsive */
-    @media (min-width: 768px) {
-      .wrap {
-        padding: 18px;
-      }
-      
-      .summary-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      
-      .client-actions {
-        flex-wrap: nowrap;
-      }
-      
-      .note-form-actions {
-        flex-wrap: nowrap;
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      .supervisor-cards-grid {
-        display: grid;
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .team-stats {
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
+      }
+      
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .client-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .sparkline-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -700,414 +587,351 @@
   <header>
     <div class="logo">Recovery Biometrics</div>
     <div class="account-switcher">
-      <button class="account-btn" id="accountBtn">
-        <span id="currentAccountName">Dr. Sarah Chen</span>
+      <button class="account-btn" onclick="toggleAccountDropdown()">
+        <span id="currentAccount">Dr. Sarah Chen (VP)</span>
         <span>▼</span>
       </button>
       <div class="account-dropdown" id="accountDropdown">
-        <!-- Populated by JS -->
+        <!-- Populated by JavaScript -->
       </div>
     </div>
   </header>
 
   <div class="wrap" id="app">
-    <!-- Content rendered by JS -->
+    <!-- Content rendered by JavaScript -->
   </div>
 
-  <div class="toast" id="toast"></div>
-
   <script>
-    // ============================================================================
-    // DATA STRUCTURES
-    // ============================================================================
+    // ==================== DATA STRUCTURE ====================
     
-    const accounts = [
-      {id: 'vp', name: 'Dr. Sarah Chen', role: 'VP of Therapy'},
-      {id: 'jane', name: 'Jane Martinez', role: 'Clinical Supervisor'},
-      {id: 'michael', name: 'Michael Torres', role: 'Clinical Supervisor'},
-      {id: 'lisa', name: 'Lisa Wang', role: 'Clinical Supervisor'},
-      {id: 'james', name: 'James Kim', role: 'Clinical Supervisor'}
-    ];
-    
-    let currentAccount = 'vp';
-    let currentView = 'vp-dashboard'; // 'vp-dashboard', 'supervisor-caseload', 'client-detail'
-    let currentSupervisor = null;
-    let currentClient = null;
-    
-    const supervisors = {
-      jane: {
+    // Accounts
+    const accounts = {
+      vp: {
+        id: 'vp',
+        name: 'Dr. Sarah Chen',
+        role: 'VP of Clinical Operations',
+        type: 'vp'
+      },
+      sup1: {
+        id: 'sup1',
         name: 'Jane Martinez',
-        title: 'Clinical Supervisor',
-        clients: ['A17', 'B23', 'E45', 'F67', 'G89', 'C92', 'H12', 'D04', 'I34', 'J56', 'K78', 'L90', 'M11', 'N22', 'O33', 'P44', 'Q55', 'R66', 'S77', 'T88', 'U99', 'V00'],
-        lastActive: Date.now() - 2 * 60 * 60 * 1000
+        role: 'Clinical Supervisor',
+        type: 'supervisor'
       },
-      michael: {
+      sup2: {
+        id: 'sup2',
         name: 'Michael Torres',
-        title: 'Clinical Supervisor',
-        clients: ['W11', 'X22', 'Y33', 'Z44', 'AA55', 'BB66', 'CC77', 'DD88', 'EE99', 'FF00', 'GG11', 'HH22', 'II33', 'JJ44', 'KK55', 'LL66', 'MM77', 'NN88'],
-        lastActive: Date.now() - 45 * 60 * 1000
+        role: 'Clinical Supervisor',
+        type: 'supervisor'
       },
-      lisa: {
+      sup3: {
+        id: 'sup3',
         name: 'Lisa Wang',
-        title: 'Clinical Supervisor',
-        clients: ['OO99', 'PP00', 'QQ11', 'RR22', 'SS33', 'TT44', 'UU55', 'VV66', 'WW77', 'XX88', 'YY99', 'ZZ00', 'AAA1', 'BBB2', 'CCC3'],
-        lastActive: Date.now() - 24 * 60 * 60 * 1000
+        role: 'Clinical Supervisor',
+        type: 'supervisor'
       },
-      james: {
+      sup4: {
+        id: 'sup4',
         name: 'James Kim',
-        title: 'Clinical Supervisor',
-        clients: ['DDD4', 'EEE5', 'FFF6', 'GGG7', 'HHH8', 'III9', 'JJJ0', 'KKK1', 'LLL2', 'MMM3', 'NNN4', 'OOO5'],
-        lastActive: Date.now() - 3 * 60 * 60 * 1000
+        role: 'Clinical Supervisor',
+        type: 'supervisor'
+      },
+      th1: {
+        id: 'th1',
+        name: 'Alex Rivera',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup1'
+      },
+      th2: {
+        id: 'th2',
+        name: 'Maria Santos',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup1'
+      },
+      th3: {
+        id: 'th3',
+        name: 'David Kim',
+        role: 'Associate Therapist',
+        type: 'therapist',
+        supervisor: 'sup1'
+      },
+      th4: {
+        id: 'th4',
+        name: 'Sarah Johnson',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup2'
+      },
+      th5: {
+        id: 'th5',
+        name: 'James Lee',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup2'
+      },
+      th6: {
+        id: 'th6',
+        name: 'Emily Chen',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup3'
+      },
+      th7: {
+        id: 'th7',
+        name: 'Tom Wilson',
+        role: 'Associate Therapist',
+        type: 'therapist',
+        supervisor: 'sup3'
+      },
+      th8: {
+        id: 'th8',
+        name: 'Rachel Martinez',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup4'
+      },
+      th9: {
+        id: 'th9',
+        name: 'Chris Brown',
+        role: 'Licensed Therapist',
+        type: 'therapist',
+        supervisor: 'sup4'
       }
     };
     
-    // Sample client data
-    const sampleEntries = {
-      baseline: "Entry documents high participation and cooperative tone. Focus is on objectives and near-term steps. Notes describe responsiveness and willingness to follow through.",
-      declining1: "Entry notes increased strain due to scheduling pressure. Participation remains present but less spontaneous. Barriers are mentioned more often than in baseline.",
-      declining2: "Entry describes frustration with the process and reduced engagement. Tone becomes more transactional. Follow-through is less clear and responsiveness decreases.",
-      declining3: "Entry notes minimal participation unless prompted. External constraints dominate discussion. Forward movement slows and priorities shift toward immediate demands.",
-      stable: "Entry documents continued engagement and steady participation. Client remains responsive and focused on treatment objectives."
+    // Supervisors data
+    const supervisors = {
+      sup1: {
+        id: 'sup1',
+        name: 'Jane Martinez',
+        title: 'Clinical Supervisor',
+        lastActive: new Date(Date.now() - 2 * 3600000),
+        therapists: ['th1', 'th2', 'th3']
+      },
+      sup2: {
+        id: 'sup2',
+        name: 'Michael Torres',
+        title: 'Clinical Supervisor',
+        lastActive: new Date(Date.now() - 5 * 3600000),
+        therapists: ['th4', 'th5']
+      },
+      sup3: {
+        id: 'sup3',
+        name: 'Lisa Wang',
+        title: 'Clinical Supervisor',
+        lastActive: new Date(Date.now() - 1 * 3600000),
+        therapists: ['th6', 'th7']
+      },
+      sup4: {
+        id: 'sup4',
+        name: 'James Kim',
+        title: 'Clinical Supervisor',
+        lastActive: new Date(Date.now() - 8 * 3600000),
+        therapists: ['th8', 'th9']
+      }
     };
     
-    const clientData = {};
+    // Therapists data
+    const therapists = {
+      th1: {
+        id: 'th1',
+        name: 'Alex Rivera',
+        title: 'Licensed Therapist, LCSW',
+        supervisor: 'sup1',
+        lastActive: new Date(Date.now() - 1 * 3600000),
+        clients: ['C101', 'C102', 'C103', 'C104', 'C105', 'C106', 'C107', 'C108', 'C109', 'C110', 
+                  'C111', 'C112', 'C113', 'C114', 'C115', 'C116', 'C117', 'C118', 'C119', 'C120', 
+                  'C121', 'C122', 'C123', 'C124', 'C125']
+      },
+      th2: {
+        id: 'th2',
+        name: 'Maria Santos',
+        title: 'Licensed Therapist, LMFT',
+        supervisor: 'sup1',
+        lastActive: new Date(Date.now() - 3 * 3600000),
+        clients: ['C201', 'C202', 'C203', 'C204', 'C205', 'C206', 'C207', 'C208', 'C209', 'C210',
+                  'C211', 'C212', 'C213', 'C214', 'C215', 'C216', 'C217', 'C218', 'C219', 'C220',
+                  'C221', 'C222']
+      },
+      th3: {
+        id: 'th3',
+        name: 'David Kim',
+        title: 'Associate Therapist',
+        supervisor: 'sup1',
+        lastActive: new Date(Date.now() - 4 * 3600000),
+        clients: ['C301', 'C302', 'C303', 'C304', 'C305', 'C306', 'C307', 'C308', 'C309', 'C310',
+                  'C311', 'C312', 'C313', 'C314', 'C315', 'C316', 'C317', 'C318', 'C319', 'C320']
+      },
+      th4: {
+        id: 'th4',
+        name: 'Sarah Johnson',
+        title: 'Licensed Therapist, LPC',
+        supervisor: 'sup2',
+        lastActive: new Date(Date.now() - 2 * 3600000),
+        clients: ['C401', 'C402', 'C403', 'C404', 'C405', 'C406', 'C407', 'C408', 'C409', 'C410',
+                  'C411', 'C412', 'C413', 'C414', 'C415', 'C416', 'C417', 'C418', 'C419', 'C420',
+                  'C421', 'C422', 'C423']
+      },
+      th5: {
+        id: 'th5',
+        name: 'James Lee',
+        title: 'Licensed Therapist, LCSW',
+        supervisor: 'sup2',
+        lastActive: new Date(Date.now() - 6 * 3600000),
+        clients: ['C501', 'C502', 'C503', 'C504', 'C505', 'C506', 'C507', 'C508', 'C509', 'C510',
+                  'C511', 'C512', 'C513', 'C514', 'C515', 'C516', 'C517', 'C518', 'C519', 'C520',
+                  'C521']
+      },
+      th6: {
+        id: 'th6',
+        name: 'Emily Chen',
+        title: 'Licensed Therapist, LMFT',
+        supervisor: 'sup3',
+        lastActive: new Date(Date.now() - 2 * 3600000),
+        clients: ['C601', 'C602', 'C603', 'C604', 'C605', 'C606', 'C607', 'C608', 'C609', 'C610',
+                  'C611', 'C612', 'C613', 'C614', 'C615', 'C616', 'C617', 'C618', 'C619', 'C620',
+                  'C621', 'C622', 'C623', 'C624']
+      },
+      th7: {
+        id: 'th7',
+        name: 'Tom Wilson',
+        title: 'Associate Therapist',
+        supervisor: 'sup3',
+        lastActive: new Date(Date.now() - 5 * 3600000),
+        clients: ['C701', 'C702', 'C703', 'C704', 'C705', 'C706', 'C707', 'C708', 'C709', 'C710',
+                  'C711', 'C712', 'C713', 'C714', 'C715', 'C716', 'C717', 'C718', 'C719']
+      },
+      th8: {
+        id: 'th8',
+        name: 'Rachel Martinez',
+        title: 'Licensed Therapist, LPC',
+        supervisor: 'sup4',
+        lastActive: new Date(Date.now() - 3 * 3600000),
+        clients: ['C801', 'C802', 'C803', 'C804', 'C805', 'C806', 'C807', 'C808', 'C809', 'C810',
+                  'C811', 'C812', 'C813', 'C814', 'C815', 'C816', 'C817', 'C818', 'C819', 'C820',
+                  'C821', 'C822']
+      },
+      th9: {
+        id: 'th9',
+        name: 'Chris Brown',
+        title: 'Licensed Therapist, LCSW',
+        supervisor: 'sup4',
+        lastActive: new Date(Date.now() - 7 * 3600000),
+        clients: ['C901', 'C902', 'C903', 'C904', 'C905', 'C906', 'C907', 'C908', 'C909', 'C910',
+                  'C911', 'C912', 'C913', 'C914', 'C915', 'C916', 'C917', 'C918', 'C919', 'C920']
+      }
+    };
     
-    // Initialize client data
-    Object.keys(supervisors).forEach(supId => {
-      supervisors[supId].clients.forEach((clientId, idx) => {
-        let status, changes, entries;
+    // Generate client data
+    function generateClientData() {
+      const clients = {};
+      const allClientIds = Object.values(therapists).flatMap(t => t.clients);
+      
+      allClientIds.forEach((id, idx) => {
+        // Determine status based on modulo
+        let status, lastReviewed, needsReview;
+        const mod = idx % 10;
         
-        // First 5 clients are "needs review"
-        if (idx < 5) {
-          status = 'needsReview';
-          changes = ['Participation ↓', 'Forward movement ↓', 'External constraints ↑'];
-          entries = [
-            sampleEntries.baseline,
-            sampleEntries.baseline,
-            sampleEntries.declining1,
-            sampleEntries.declining2,
-            sampleEntries.declining3,
-            sampleEntries.declining3
-          ];
-        }
-        // Next 2 are "watching"
-        else if (idx < 7) {
+        if (mod < 2) {
+          status = 'urgent';
+          needsReview = true;
+          lastReviewed = new Date(Date.now() - (4 + Math.random() * 4) * 24 * 3600000);
+        } else if (mod < 3) {
           status = 'watching';
-          changes = ['Uncertainty ↑'];
-          entries = [
-            sampleEntries.baseline,
-            sampleEntries.baseline,
-            sampleEntries.stable,
-            sampleEntries.declining1,
-            sampleEntries.stable,
-            sampleEntries.stable
-          ];
-        }
-        // Rest are stable
-        else {
+          needsReview = false;
+          lastReviewed = new Date(Date.now() - (2 + Math.random() * 3) * 24 * 3600000);
+        } else {
           status = 'stable';
-          changes = [];
-          entries = [
-            sampleEntries.baseline,
-            sampleEntries.baseline,
-            sampleEntries.stable,
-            sampleEntries.stable,
-            sampleEntries.stable,
-            sampleEntries.stable
-          ];
+          needsReview = false;
+          lastReviewed = new Date(Date.now() - Math.random() * 2 * 24 * 3600000);
         }
         
-        const lastSession = Date.now() - (Math.random() * 5 + 1) * 24 * 60 * 60 * 1000;
-        const lastReviewed = Math.random() > 0.3 ? Date.now() - (Math.random() * 10 + 1) * 24 * 60 * 60 * 1000 : null;
+        const lastSession = new Date(Date.now() - Math.random() * 2 * 24 * 3600000);
         
-        clientData[clientId] = {
+        // Generate change indicators
+        const changes = [];
+        if (status === 'urgent') {
+          changes.push({ label: 'Participation', direction: 'down' });
+          changes.push({ label: 'Forward Movement', direction: 'down' });
+        } else if (status === 'watching') {
+          changes.push({ label: 'Uncertainty', direction: 'up' });
+        }
+        
+        // Generate dummy indicator data for sparklines
+        const indicators = {
+          participation: generateTrendData(status === 'urgent' ? -0.3 : 0.1),
+          forwardMovement: generateTrendData(status === 'urgent' ? -0.4 : 0.05),
+          uncertainty: generateTrendData(status === 'watching' ? 0.3 : -0.05),
+          ownership: generateTrendData(0),
+          externalConstraints: generateTrendData(status === 'watching' ? 0.2 : -0.1)
+        };
+        
+        clients[id] = {
+          id,
           status,
-          changes,
+          needsReview,
           lastSession,
           lastReviewed,
-          entries,
+          changes,
+          indicators,
           notes: []
         };
       });
-    });
+      
+      return clients;
+    }
     
-    // Add some sample notes
-    clientData['B23'].notes = [
-      {date: Date.now() - 5 * 24 * 60 * 60 * 1000, author: 'Jane Martinez', text: 'Client showing early signs of disengagement. Flagged for closer monitoring.'}
-    ];
-    
-    // ============================================================================
-    // LEXICON & INDICATOR COMPUTATION (from original demo)
-    // ============================================================================
-    
-    const LEX = {
-      part_pos: ["participation", "engaged", "responsive", "cooperative", "collaborative", "asked", "shared", "follow through", "willing"],
-      part_neg: ["minimal", "withdrawn", "disengaged", "brief", "short answers", "unresponsive", "resistant", "checked out"],
-      fwd_pos: ["plan", "next steps", "follow up", "objective", "goal", "action", "commit", "progress", "schedule"],
-      fwd_neg: ["stuck", "no plan", "unclear", "same issues", "repeated", "not moving", "skeptical", "not helpful"],
-      unc_pos: ["maybe", "unsure", "not sure", "uncertain", "on the fence", "questioned", "doubt", "mixed", "skeptical"],
-      own_pos: ["i will", "i did", "i chose", "i decided", "i can", "i plan", "i want", "taking responsibility"],
-      own_neg: ["made me", "forced", "had to", "no choice", "can't", "won't let me", "not my fault"],
-      ext_pos: ["schedule", "transportation", "court", "work", "money", "rules", "policy", "system", "staff", "insurance", "timeline", "requirements", "barrier", "constraint"]
-    };
-    
-    function countHits(text, phrases) {
-      const t = (text || "").toLowerCase();
-      let c = 0;
-      for (const p of phrases) {
-        if (t.includes(p)) c += 1;
+    function generateTrendData(drift) {
+      const data = [];
+      let val = 5 + (Math.random() - 0.5) * 2;
+      for (let i = 0; i < 8; i++) {
+        val += (Math.random() - 0.5) + drift;
+        val = Math.max(0, Math.min(10, val));
+        data.push(Math.round(val * 10) / 10);
       }
-      return c;
+      return data;
     }
     
-    function clamp(n, lo, hi) {
-      return Math.max(lo, Math.min(hi, n));
-    }
+    const clients = generateClientData();
     
-    function score01(raw, cap = 6) {
-      return clamp(raw / cap, 0, 1);
-    }
+    // ==================== STATE ====================
     
-    function computeEntryIndicators(text) {
-      const x = (text || '').trim();
-      if (!x) {
-        return {participation: 0.5, forward: 0.5, uncertainty: 0.25, ownership: 0.5, external: 0.25};
-      }
-      
-      const pp = countHits(x, LEX.part_pos);
-      const pn = countHits(x, LEX.part_neg);
-      const fp = countHits(x, LEX.fwd_pos);
-      const fn = countHits(x, LEX.fwd_neg);
-      const up = countHits(x, LEX.unc_pos);
-      const op = countHits(x, LEX.own_pos);
-      const on = countHits(x, LEX.own_neg);
-      const ep = countHits(x, LEX.ext_pos);
-      
-      const participation = clamp(0.5 + (pp - pn) * 0.10, 0, 1);
-      const forward = clamp(0.5 + (fp - fn) * 0.10, 0, 1);
-      const uncertainty = clamp(0.15 + up * 0.12, 0, 1);
-      const ownership = clamp(0.5 + (op - on) * 0.08, 0, 1);
-      const external = clamp(0.15 + score01(ep, 10) * 0.85, 0, 1);
-      
-      return {participation, forward, uncertainty, ownership, external};
-    }
+    let currentAccount = 'vp';
+    let currentView = 'vp'; // 'vp', 'supervisor', 'therapist', 'client'
+    let currentSupervisor = null;
+    let currentTherapist = null;
+    let currentClient = null;
+    let currentTab = 'overview';
+    let collapsedSections = {};
     
-    function mean(arr) {
-      return arr.reduce((a, b) => a + b, 0) / (arr.length || 1);
-    }
-    
-    function summarizeDelta(baseAvg, recentAvg, direction) {
-      const delta = recentAvg - baseAvg;
-      const sustained = Math.abs(delta) >= 0.12;
-      
-      let arrow = '↔';
-      let cls = 'flat';
-      
-      if (direction === 'down') {
-        if (delta <= -0.12) {
-          arrow = '↓';
-          cls = 'down';
-        }
-        if (!sustained) {
-          arrow = '↔';
-          cls = 'flat';
-        }
-      } else {
-        if (delta >= 0.12) {
-          arrow = '↑';
-          cls = 'up';
-        }
-        if (!sustained) {
-          arrow = '↔';
-          cls = 'flat';
-        }
-      }
-      return {arrow, cls, sustained};
-    }
-    
-    // ============================================================================
-    // SPARKLINE DRAWING (from original demo)
-    // ============================================================================
-    
-    function drawSpark(metricId, values) {
-      const w = 300, h = 60;
-      const left = 6, right = 6, top = 6, bottom = 10;
-      const innerW = w - left - right;
-      const innerH = h - top - bottom;
-      
-      const n = values.length;
-      const step = innerW / (n - 1);
-      
-      const pts = values.map((v, i) => {
-        const x = left + i * step;
-        const y = top + (1 - clamp(v, 0, 1)) * innerH;
-        return {x, y};
-      });
-      
-      const d = pts.map((p, i) => (i === 0 ? `M ${p.x.toFixed(1)} ${p.y.toFixed(1)}` : `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`)).join(' ');
-      const line = document.getElementById(`line-${metricId}`);
-      if (line) line.setAttribute('d', d);
-      
-      const dots = document.getElementById(`dots-${metricId}`);
-      if (dots) {
-        dots.innerHTML = '';
-        pts.forEach(p => {
-          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          c.setAttribute('class', 'dot');
-          c.setAttribute('cx', p.x);
-          c.setAttribute('cy', p.y);
-          c.setAttribute('r', 3.2);
-          dots.appendChild(c);
-        });
-      }
-    }
-    
-    // ============================================================================
-    // UTILITIES
-    // ============================================================================
-    
-    function formatDate(timestamp) {
-      if (!timestamp) return 'Never';
-      const d = new Date(timestamp);
-      const now = Date.now();
-      const diff = now - timestamp;
-      
-      if (diff < 60 * 60 * 1000) {
-        const mins = Math.floor(diff / (60 * 1000));
-        return `${mins}m ago`;
-      } else if (diff < 24 * 60 * 60 * 1000) {
-        const hrs = Math.floor(diff / (60 * 60 * 1000));
-        return `${hrs}h ago`;
-      } else {
-        const days = Math.floor(diff / (24 * 60 * 60 * 1000));
-        return `${days}d ago`;
-      }
-    }
-    
-    function formatFullDate(timestamp) {
-      if (!timestamp) return 'Never';
-      const d = new Date(timestamp);
-      return d.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
-    }
-    
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-    
-    function getClientStats(supervisor) {
-      const clients = supervisor.clients;
-      let needsReview = 0, watching = 0, stable = 0;
-      
-      clients.forEach(cId => {
-        const c = clientData[cId];
-        if (c.status === 'needsReview') needsReview++;
-        else if (c.status === 'watching') watching++;
-        else stable++;
-      });
-      
-      return {total: clients.length, needsReview, watching, stable};
-    }
-    
-    function getTeamStats() {
-      let totalClients = 0, totalNeedsReview = 0, totalWatching = 0;
-      
-      Object.keys(supervisors).forEach(sId => {
-        const stats = getClientStats(supervisors[sId]);
-        totalClients += stats.total;
-        totalNeedsReview += stats.needsReview;
-        totalWatching += stats.watching;
-      });
-      
-      return {
-        supervisors: Object.keys(supervisors).length,
-        clients: totalClients,
-        needsReview: totalNeedsReview,
-        watching: totalWatching,
-        stable: totalClients - totalNeedsReview - totalWatching
-      };
-    }
-    
-    function isNeglected(client) {
-      if (!client.lastReviewed) return client.status !== 'needsReview'; // Only warn if not urgent
-      const daysSinceReview = (Date.now() - client.lastReviewed) / (24 * 60 * 60 * 1000);
-      
-      if (client.status === 'needsReview' && daysSinceReview > 3) return true;
-      if (client.status === 'watching' && daysSinceReview > 7) return true;
-      if (client.status === 'stable' && daysSinceReview > 7) return true;
-      
-      return false;
-    }
-    
-    // ============================================================================
-    // ACCOUNT SWITCHING
-    // ============================================================================
-    
-    function initAccountSwitcher() {
-      const dropdown = document.getElementById('accountDropdown');
-      dropdown.innerHTML = accounts.map(acc => `
-        <div class="account-dropdown-item ${acc.id === currentAccount ? 'active' : ''}" data-account="${acc.id}">
-          <div>${acc.name}</div>
-          <div class="role">${acc.role}</div>
-        </div>
-      `).join('');
-      
-      document.getElementById('accountBtn').onclick = (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('show');
-      };
-      
-      document.addEventListener('click', () => {
-        dropdown.classList.remove('show');
-      });
-      
-      dropdown.querySelectorAll('.account-dropdown-item').forEach(item => {
-        item.onclick = (e) => {
-          e.stopPropagation();
-          const accountId = item.dataset.account;
-          switchAccount(accountId);
-        };
-      });
-    }
-    
-    function switchAccount(accountId) {
-      currentAccount = accountId;
-      const account = accounts.find(a => a.id === accountId);
-      document.getElementById('currentAccountName').textContent = account.name;
-      document.getElementById('accountDropdown').classList.remove('show');
-      
-      // Switch view based on role
-      if (accountId === 'vp') {
-        currentView = 'vp-dashboard';
-      } else {
-        currentView = 'supervisor-caseload';
-        currentSupervisor = accountId;
-      }
-      
-      render();
-      initAccountSwitcher(); // Refresh to update active state
-    }
-    
-    // ============================================================================
-    // RENDERING
-    // ============================================================================
+    // ==================== RENDERING ====================
     
     function render() {
       const app = document.getElementById('app');
+      const account = accounts[currentAccount];
       
-      if (currentView === 'vp-dashboard') {
-        app.innerHTML = renderVPDashboard();
-        attachVPEventListeners();
-      } else if (currentView === 'supervisor-caseload') {
-        app.innerHTML = renderSupervisorCaseload();
-        attachSupervisorEventListeners();
-      } else if (currentView === 'client-detail') {
+      if (currentView === 'client' && currentClient) {
         app.innerHTML = renderClientDetail();
-        attachClientDetailEventListeners();
+      } else if (currentView === 'therapist' && currentTherapist) {
+        app.innerHTML = renderTherapistCaseload();
+      } else if (currentView === 'supervisor' && currentSupervisor) {
+        app.innerHTML = renderSupervisorTeam();
+      } else if (account.type === 'vp') {
+        app.innerHTML = renderVPDashboard();
+      } else if (account.type === 'supervisor') {
+        currentSupervisor = account.id;
+        app.innerHTML = renderSupervisorTeam();
+      } else if (account.type === 'therapist') {
+        currentTherapist = account.id;
+        app.innerHTML = renderTherapistCaseload();
       }
+      
+      attachEventListeners();
     }
+    
+    // ==================== VP DASHBOARD ====================
     
     function renderVPDashboard() {
       const stats = getTeamStats();
@@ -1119,23 +943,23 @@
           <div class="team-stats">
             <div class="team-stat">
               <strong>${stats.supervisors}</strong>
-              Supervisors
+              <span>Supervisors</span>
+            </div>
+            <div class="team-stat">
+              <strong>${stats.therapists}</strong>
+              <span>Therapists</span>
             </div>
             <div class="team-stat">
               <strong>${stats.clients}</strong>
-              Total Clients
+              <span>Total Clients</span>
             </div>
             <div class="team-stat">
               <strong>${stats.needsReview}</strong>
-              Need Review
+              <span>Need Review</span>
             </div>
             <div class="team-stat">
-              <strong>${stats.watching}</strong>
-              Watching
-            </div>
-            <div class="team-stat">
-              <strong>\$${monthlyPrice.toLocaleString()}/mo</strong>
-              Current Cost
+              <strong>$${monthlyPrice.toLocaleString()}/mo</strong>
+              <span>Current Cost</span>
             </div>
           </div>
           <div class="risk-dist">
@@ -1144,26 +968,30 @@
             <div class="risk-badge">🟢 ${stats.stable} Stable</div>
           </div>
           <div style="margin-top: 12px; font-size: 12px; opacity: 0.85;">
-            Pricing: ${stats.clients} clients × \$8/client/month = \$${monthlyPrice.toLocaleString()}
+            Pricing: ${stats.clients} clients × $8/client/month = $${monthlyPrice.toLocaleString()}
           </div>
         </div>
         
-        <div class="supervisor-cards-grid">
+        <div class="cards-grid">
           ${Object.keys(supervisors).map(sId => {
             const sup = supervisors[sId];
-            const stats = getClientStats(sup);
+            const stats = getSupervisorStats(sup);
             
             return `
-              <div class="supervisor-card">
-                <div class="supervisor-header">
+              <div class="person-card">
+                <div class="person-header">
                   <div>
-                    <div class="supervisor-name">${sup.name}</div>
-                    <div class="supervisor-title">${sup.title}</div>
+                    <div class="person-name">${sup.name}</div>
+                    <div class="person-title">${sup.title}</div>
                   </div>
                 </div>
                 
-                <div class="supervisor-stats">
-                  <div>${stats.total} clients</div>
+                <div class="person-stats">
+                  <div>${stats.therapists} therapists</div>
+                  <div>${stats.clients} clients</div>
+                </div>
+                
+                <div class="person-stats">
                   ${stats.needsReview > 0 ? `<span class="stat-badge red">🔴 ${stats.needsReview}</span>` : ''}
                   ${stats.watching > 0 ? `<span class="stat-badge yellow">🟡 ${stats.watching}</span>` : ''}
                   ${stats.stable > 0 ? `<span class="stat-badge green">🟢 ${stats.stable}</span>` : ''}
@@ -1171,7 +999,7 @@
                 
                 <div class="last-active">Last active: ${formatDate(sup.lastActive)}</div>
                 
-                <button class="btn full" data-supervisor="${sId}">View Dashboard</button>
+                <button class="btn full" data-supervisor="${sId}">View Team</button>
               </div>
             `;
           }).join('')}
@@ -1179,428 +1007,712 @@
       `;
     }
     
-    function attachVPEventListeners() {
-      document.querySelectorAll('[data-supervisor]').forEach(btn => {
-        btn.onclick = () => {
-          const supId = btn.dataset.supervisor;
-          currentSupervisor = supId;
-          currentView = 'supervisor-caseload';
-          render();
-        };
-      });
+    function getTeamStats() {
+      const allTherapists = Object.values(therapists);
+      const allClients = Object.values(clients);
+      
+      return {
+        supervisors: Object.keys(supervisors).length,
+        therapists: allTherapists.length,
+        clients: allClients.length,
+        needsReview: allClients.filter(c => c.status === 'urgent').length,
+        watching: allClients.filter(c => c.status === 'watching').length,
+        stable: allClients.filter(c => c.status === 'stable').length
+      };
     }
     
-    function renderSupervisorCaseload() {
+    function getSupervisorStats(supervisor) {
+      const supTherapists = supervisor.therapists.map(tid => therapists[tid]);
+      const allClientIds = supTherapists.flatMap(t => t.clients);
+      const allClients = allClientIds.map(cid => clients[cid]);
+      
+      return {
+        therapists: supTherapists.length,
+        clients: allClients.length,
+        needsReview: allClients.filter(c => c.status === 'urgent').length,
+        watching: allClients.filter(c => c.status === 'watching').length,
+        stable: allClients.filter(c => c.status === 'stable').length
+      };
+    }
+    
+    // ==================== SUPERVISOR TEAM VIEW ====================
+    
+    function renderSupervisorTeam() {
       const sup = supervisors[currentSupervisor];
-      const stats = getClientStats(sup);
-      
-      const needsReviewClients = sup.clients.filter(cId => clientData[cId].status === 'needsReview');
-      const watchingClients = sup.clients.filter(cId => clientData[cId].status === 'watching');
-      const stableClients = sup.clients.filter(cId => clientData[cId].status === 'stable');
+      const supTherapists = sup.therapists.map(tid => therapists[tid]);
+      const isVPViewing = accounts[currentAccount].type === 'vp';
       
       return `
-        ${currentAccount === 'vp' ? `<div class="back-btn" id="backToVP">← Back to VP View</div>` : ''}
+        ${isVPViewing ? '<button class="back-btn" onclick="goToVP()">← Back to Team Overview</button>' : ''}
         
-        <div class="card">
-          <h2 style="margin: 0 0 8px; font-size: 18px;">${sup.name}'s Caseload</h2>
-          <div class="muted">${stats.total} clients • Last synced: ${formatDate(Date.now() - 5 * 60 * 1000)}</div>
-        </div>
-        
-        ${renderClientSection('🔴 NEEDS REVIEW', stats.needsReview, needsReviewClients, true)}
-        ${renderClientSection('🟡 WATCHING', stats.watching, watchingClients, stats.needsReview === 0)}
-        ${renderClientSection('🟢 STABLE', stats.stable, stableClients, false)}
-      `;
-    }
-    
-    function renderClientSection(title, count, clientIds, defaultOpen) {
-      return `
-        <div class="card">
-          <div class="section-header" data-section="${title}">
-            <div class="section-title">
-              <span>${title}</span>
-              <span class="section-count">${count}</span>
+        <div class="team-overview">
+          <h2>👥 ${sup.name}'s Team</h2>
+          <div class="team-stats">
+            <div class="team-stat">
+              <strong>${supTherapists.length}</strong>
+              <span>Therapists</span>
             </div>
-            <span class="section-toggle">${defaultOpen ? '▼' : '▶'}</span>
-          </div>
-          <div class="section-content ${defaultOpen ? 'show' : ''}">
-            ${clientIds.map(cId => renderClientCard(cId)).join('')}
-          </div>
-        </div>
-      `;
-    }
-    
-    function renderClientCard(clientId) {
-      const client = clientData[clientId];
-      const neglected = isNeglected(client);
-      const icon = client.status === 'needsReview' ? '⚠️' : client.status === 'watching' ? '👁️' : '✓';
-      
-      return `
-        <div class="client-card">
-          <div class="client-header">
-            <div class="client-id">${icon} Client ${clientId}</div>
-          </div>
-          
-          ${client.changes.length > 0 ? `<div class="client-changes">${client.changes.join(' • ')}</div>` : ''}
-          
-          <div class="client-meta">
-            <div>Last session: ${formatDate(client.lastSession)}</div>
-            <div class="${neglected ? 'review-warning' : ''}">
-              Last reviewed: ${formatDate(client.lastReviewed)}
-              ${neglected ? ' ⚠️' : ''}
+            <div class="team-stat">
+              <strong>${supTherapists.reduce((sum, t) => sum + t.clients.length, 0)}</strong>
+              <span>Total Clients</span>
             </div>
           </div>
-          
-          <div class="client-actions">
-            <button class="btn" data-client="${clientId}">Review Now</button>
-            <button class="btn success" data-mark="${clientId}">Mark ✓</button>
+        </div>
+        
+        <div class="cards-grid">
+          ${supTherapists.map(therapist => {
+            const stats = getTherapistStats(therapist);
+            
+            return `
+              <div class="person-card">
+                <div class="person-header">
+                  <div>
+                    <div class="person-name">${therapist.name}</div>
+                    <div class="person-title">${therapist.title}</div>
+                  </div>
+                </div>
+                
+                <div class="person-stats">
+                  <div>${stats.total} clients</div>
+                  ${stats.needsReview > 0 ? `<span class="stat-badge red">🔴 ${stats.needsReview}</span>` : ''}
+                  ${stats.watching > 0 ? `<span class="stat-badge yellow">🟡 ${stats.watching}</span>` : ''}
+                  ${stats.stable > 0 ? `<span class="stat-badge green">🟢 ${stats.stable}</span>` : ''}
+                </div>
+                
+                <div class="last-active">Last active: ${formatDate(therapist.lastActive)}</div>
+                
+                <button class="btn full" data-therapist="${therapist.id}">View Caseload</button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+    
+    function getTherapistStats(therapist) {
+      const therapistClients = therapist.clients.map(cid => clients[cid]);
+      
+      return {
+        total: therapistClients.length,
+        needsReview: therapistClients.filter(c => c.status === 'urgent').length,
+        watching: therapistClients.filter(c => c.status === 'watching').length,
+        stable: therapistClients.filter(c => c.status === 'stable').length
+      };
+    }
+    
+    // ==================== THERAPIST CASELOAD VIEW ====================
+    
+    function renderTherapistCaseload() {
+      const therapist = therapists[currentTherapist];
+      const therapistClients = therapist.clients.map(cid => clients[cid]);
+      
+      const needsReview = therapistClients.filter(c => c.status === 'urgent');
+      const watching = therapistClients.filter(c => c.status === 'watching');
+      const stable = therapistClients.filter(c => c.status === 'stable');
+      
+      const isSupViewing = accounts[currentAccount].type === 'supervisor' || 
+                           (accounts[currentAccount].type === 'vp' && currentSupervisor);
+      
+      return `
+        ${isSupViewing ? `<button class="back-btn" onclick="goToSupervisor('${therapist.supervisor}')">← Back to Team</button>` : ''}
+        
+        <div class="team-overview">
+          <h2>📋 ${therapist.name}'s Caseload</h2>
+          <div class="team-stats">
+            <div class="team-stat">
+              <strong>${therapistClients.length}</strong>
+              <span>Total Clients</span>
+            </div>
+            <div class="team-stat">
+              <strong>${needsReview.length}</strong>
+              <span>Needs Review</span>
+            </div>
+            <div class="team-stat">
+              <strong>${watching.length}</strong>
+              <span>Watching</span>
+            </div>
+            <div class="team-stat">
+              <strong>${stable.length}</strong>
+              <span>Stable</span>
+            </div>
+          </div>
+        </div>
+        
+        ${renderClientSection('Needs Review', needsReview, 'needsReview', false)}
+        ${renderClientSection('Watching', watching, 'watching', true)}
+        ${renderClientSection('Stable', stable, 'stable', true)}
+      `;
+    }
+    
+    function renderClientSection(title, clientsList, sectionId, collapsed) {
+      const isCollapsed = collapsedSections[sectionId] !== undefined ? collapsedSections[sectionId] : collapsed;
+      
+      return `
+        <div class="client-section">
+          <div class="section-header" data-section="${sectionId}">
+            <div class="section-title">${title}</div>
+            <div class="section-count">${clientsList.length}</div>
+          </div>
+          <div class="client-list ${isCollapsed ? 'collapsed' : ''}">
+            ${clientsList.map(client => `
+              <div class="client-card ${client.status}" data-client="${client.id}">
+                <div class="client-id">${client.id}</div>
+                <div class="client-meta">
+                  Last session: ${formatDate(client.lastSession)}<br/>
+                  Last reviewed: ${formatDate(client.lastReviewed)}
+                  ${isNeglected(client.lastReviewed, client.status) ? ' ⚠️' : ''}
+                </div>
+                ${client.changes.length > 0 ? `
+                  <div class="change-chips">
+                    ${client.changes.map(ch => `
+                      <span class="chip ${ch.direction}">${ch.label} ${ch.direction === 'down' ? '↓' : '↑'}</span>
+                    `).join('')}
+                  </div>
+                ` : ''}
+                <div class="client-actions">
+                  <button class="btn btn-sm" onclick="viewClient('${client.id}'); event.stopPropagation();">Review Now</button>
+                  <button class="btn btn-sm secondary" onclick="markReviewed('${client.id}'); event.stopPropagation();">Mark ✓</button>
+                </div>
+              </div>
+            `).join('')}
           </div>
         </div>
       `;
     }
     
-    function attachSupervisorEventListeners() {
-      if (document.getElementById('backToVP')) {
-        document.getElementById('backToVP').onclick = () => {
-          currentView = 'vp-dashboard';
-          render();
-        };
-      }
-      
-      document.querySelectorAll('.section-header').forEach(header => {
-        header.onclick = () => {
-          const content = header.nextElementSibling;
-          const toggle = header.querySelector('.section-toggle');
-          content.classList.toggle('show');
-          toggle.textContent = content.classList.contains('show') ? '▼' : '▶';
-        };
-      });
-      
-      document.querySelectorAll('[data-client]').forEach(btn => {
-        btn.onclick = () => {
-          currentClient = btn.dataset.client;
-          currentView = 'client-detail';
-          render();
-        };
-      });
-      
-      document.querySelectorAll('[data-mark]').forEach(btn => {
-        btn.onclick = () => {
-          const clientId = btn.dataset.mark;
-          clientData[clientId].lastReviewed = Date.now();
-          showToast(`✓ Client ${clientId} marked as reviewed`);
-          render();
-        };
-      });
-    }
+    // ==================== CLIENT DETAIL VIEW ====================
     
     function renderClientDetail() {
-      const client = clientData[currentClient];
-      const entries = client.entries;
-      
-      // Compute indicators
-      const ind = entries.map(computeEntryIndicators);
-      const series = {
-        participation: ind.map(v => v.participation),
-        forward: ind.map(v => v.forward),
-        uncertainty: ind.map(v => v.uncertainty),
-        ownership: ind.map(v => v.ownership),
-        external: ind.map(v => v.external),
-      };
-      
-      const baseIdx = [0, 1];
-      const recentIdx = [3, 4, 5];
-      const base = (k) => mean(baseIdx.map(i => series[k][i]));
-      const recent = (k) => mean(recentIdx.map(i => series[k][i]));
-      
-      const dPar = summarizeDelta(base('participation'), recent('participation'), 'down');
-      const dFwd = summarizeDelta(base('forward'), recent('forward'), 'down');
-      const dUnc = summarizeDelta(base('uncertainty'), recent('uncertainty'), 'up');
-      const dOwn = summarizeDelta(base('ownership'), recent('ownership'), 'down');
-      const dExt = summarizeDelta(base('external'), recent('external'), 'up');
-      
-      const flags = [];
-      if (dPar.arrow === '↓') flags.push('Participation ↓');
-      if (dFwd.arrow === '↓') flags.push('Forward movement ↓');
-      if (dUnc.arrow === '↑') flags.push('Uncertainty ↑');
-      if (dOwn.arrow === '↓') flags.push('Ownership ↓');
-      if (dExt.arrow === '↑') flags.push('External constraints ↑');
-      
-      const oneParagraph = flags.length
-        ? 'Recent entries describe reduced participation and less forward movement compared to baseline, with increasing emphasis on external constraints. This is a direction-of-change summary only and is intended to guide human review.'
-        : 'No sustained change detected across recent entries compared to baseline. Continue routine review; no additional action implied.';
-      
-      const parts = flags.length ? {
-        current: "Recent entries describe reduced participation and less forward movement compared to baseline.",
-        background: "Earlier entries reflect higher responsiveness and clearer objectives, establishing a stronger baseline.",
-        triggers: "Records increasingly reference timeline pressure and practical constraints that became more prominent over time.",
-        maintaining: "Recurring constraints and unresolved barriers appear to be limiting follow-through across entries.",
-        supports: "Continued presence across entries and earlier responsiveness suggest capacity for re-engagement when barriers are addressed.",
-        patterns: "Shift from collaborative tone toward transactional or brief engagement is repeated in later entries.",
-        preferences: "Recent records emphasize immediate demands and requirements over longer-horizon objectives.",
-        direction: "Consider targeted human review to clarify constraints, reset objectives, and agree on a near-term plan."
-      } : {
-        current: "No sustained change detected across recent entries compared to baseline.",
-        background: "Baseline entries establish a stable reference point for this case.",
-        triggers: "No single theme appears to be driving change based on these entries.",
-        maintaining: "No recurring barrier pattern stands out in recent entries.",
-        supports: "Existing supports appear consistent across entries.",
-        patterns: "Narrative tone appears consistent across entries.",
-        preferences: "Priorities appear stable across entries.",
-        direction: "Continue routine review; no additional action implied."
-      };
+      const client = clients[currentClient];
       
       return `
-        <div class="back-btn" id="backToCaseload">← Back to Caseload</div>
+        <button class="back-btn" onclick="goBackFromClient()">← Back to Caseload</button>
         
-        <div class="card">
-          <h2 style="margin: 0 0 4px; font-size: 18px;">Client ${currentClient} - Review</h2>
-          <div class="muted">Last session: ${formatDate(client.lastSession)} • Last reviewed: ${formatDate(client.lastReviewed)}</div>
-          <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn success" id="markReviewed">Mark as Reviewed</button>
+        <div class="detail-header">
+          <div class="detail-title">${currentClient}</div>
+          <div class="detail-meta">
+            <span>Last session: ${formatDate(client.lastSession)}</span>
+            <span>Last reviewed: ${formatDate(client.lastReviewed)}</span>
           </div>
+          <button class="btn" onclick="markReviewed('${currentClient}')">Mark as Reviewed</button>
         </div>
         
-        <div class="card">
-          <div class="tabs">
-            <div class="tab active" data-tab="overview">Overview</div>
-            <div class="tab" data-tab="trends">Trends</div>
-            <div class="tab" data-tab="summary">Summary</div>
-            <div class="tab" data-tab="notes">Notes</div>
-          </div>
+        <div class="tabs">
+          <div class="tab ${currentTab === 'overview' ? 'active' : ''}" data-tab="overview">Overview</div>
+          <div class="tab ${currentTab === 'trends' ? 'active' : ''}" data-tab="trends">Trends</div>
+          <div class="tab ${currentTab === 'summary' ? 'active' : ''}" data-tab="summary">Summary</div>
+          <div class="tab ${currentTab === 'notes' ? 'active' : ''}" data-tab="notes">Notes</div>
+        </div>
+        
+        <div class="tab-content ${currentTab === 'overview' ? 'active' : ''}">
+          ${renderOverviewTab(client)}
+        </div>
+        
+        <div class="tab-content ${currentTab === 'trends' ? 'active' : ''}">
+          ${renderTrendsTab(client)}
+        </div>
+        
+        <div class="tab-content ${currentTab === 'summary' ? 'active' : ''}">
+          ${renderSummaryTab(client)}
+        </div>
+        
+        <div class="tab-content ${currentTab === 'notes' ? 'active' : ''}">
+          ${renderNotesTab(client)}
+        </div>
+      `;
+    }
+    
+    function renderOverviewTab(client) {
+      return `
+        <div class="content-card">
+          <h3>Recent Changes</h3>
+          ${client.changes.length > 0 ? `
+            <div class="change-chips">
+              ${client.changes.map(ch => `
+                <span class="chip ${ch.direction}">${ch.label} ${ch.direction === 'down' ? '↓' : '↑'}</span>
+              `).join('')}
+            </div>
+          ` : '<p>No significant changes detected.</p>'}
           
-          <div class="tab-panel active" id="overview">
-            <div class="metric">
-              <div class="metric-head">
-                <div>
-                  <div class="metric-name">What's been changing</div>
-                  <div class="muted">Relative to baseline across recent entries</div>
-                </div>
-                <div class="muted">human review</div>
-              </div>
-              <div class="chips">
-                ${flags.length === 0 ? '<div class="chip ok">No sustained change detected</div>' : ''}
-                ${flags.map(f => {
-                  const cls = f.includes('↓') ? 'warn' : f.includes('↑') ? 'up' : '';
-                  return `<div class="chip ${cls}">${f}</div>`;
-                }).join('')}
-              </div>
-              <div class="small" style="margin-top: 10px;">This is a direction-of-change summary only. No conclusions implied.</div>
+          <h3 style="margin-top: 24px;">Quick Summary</h3>
+          <p>${generateQuickSummary(client)}</p>
+        </div>
+      `;
+    }
+    
+    function renderTrendsTab(client) {
+      setTimeout(() => renderSparklines(client), 0);
+      
+      return `
+        <div class="content-card">
+          <div class="sparkline-grid">
+            <div class="sparkline-item">
+              <div class="sparkline-label">Participation</div>
+              <div class="sparkline-value">${client.indicators.participation[client.indicators.participation.length - 1].toFixed(1)}</div>
+              <div class="sparkline-delta ${getDeltaClass(client.indicators.participation)}">${getDelta(client.indicators.participation)}</div>
+              <canvas id="spark-participation" width="200" height="60"></canvas>
             </div>
             
-            <div style="margin-top: 12px;">
-              <h3 style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">One-paragraph summary</h3>
-              <p class="muted">${oneParagraph}</p>
-              <div class="small">No source text shown • Human review required</div>
+            <div class="sparkline-item">
+              <div class="sparkline-label">Forward Movement</div>
+              <div class="sparkline-value">${client.indicators.forwardMovement[client.indicators.forwardMovement.length - 1].toFixed(1)}</div>
+              <div class="sparkline-delta ${getDeltaClass(client.indicators.forwardMovement)}">${getDelta(client.indicators.forwardMovement)}</div>
+              <canvas id="spark-forward" width="200" height="60"></canvas>
             </div>
-          </div>
-          
-          <div class="tab-panel" id="trends">
-            ${renderTrendsPanel(series, dPar, dFwd, dUnc, dOwn, dExt)}
-          </div>
-          
-          <div class="tab-panel" id="summary">
-            ${renderSummaryPanel(parts)}
-          </div>
-          
-          <div class="tab-panel" id="notes">
-            ${renderNotesPanel(currentClient)}
+            
+            <div class="sparkline-item">
+              <div class="sparkline-label">Uncertainty</div>
+              <div class="sparkline-value">${client.indicators.uncertainty[client.indicators.uncertainty.length - 1].toFixed(1)}</div>
+              <div class="sparkline-delta ${getDeltaClass(client.indicators.uncertainty)}">${getDelta(client.indicators.uncertainty)}</div>
+              <canvas id="spark-uncertainty" width="200" height="60"></canvas>
+            </div>
+            
+            <div class="sparkline-item">
+              <div class="sparkline-label">Ownership</div>
+              <div class="sparkline-value">${client.indicators.ownership[client.indicators.ownership.length - 1].toFixed(1)}</div>
+              <div class="sparkline-delta ${getDeltaClass(client.indicators.ownership)}">${getDelta(client.indicators.ownership)}</div>
+              <canvas id="spark-ownership" width="200" height="60"></canvas>
+            </div>
+            
+            <div class="sparkline-item">
+              <div class="sparkline-label">External Constraints</div>
+              <div class="sparkline-value">${client.indicators.externalConstraints[client.indicators.externalConstraints.length - 1].toFixed(1)}</div>
+              <div class="sparkline-delta ${getDeltaClass(client.indicators.externalConstraints)}">${getDelta(client.indicators.externalConstraints)}</div>
+              <canvas id="spark-external" width="200" height="60"></canvas>
+            </div>
           </div>
         </div>
       `;
     }
     
-    function renderTrendsPanel(series, dPar, dFwd, dUnc, dOwn, dExt) {
+    function renderSummaryTab(client) {
       return `
-        <div class="small" style="margin-bottom: 8px;">Trendlines are case-relative comparisons across entries.</div>
-        
-        ${renderMetric('participation', 'Participation', dPar, series.participation)}
-        ${renderMetric('forward', 'Forward Movement', dFwd, series.forward)}
-        ${renderMetric('uncertainty', 'Uncertainty', dUnc, series.uncertainty)}
-        ${renderMetric('ownership', 'Ownership', dOwn, series.ownership)}
-        ${renderMetric('external', 'External Constraints', dExt, series.external)}
+        <div class="content-card">
+          <div class="summary-section">
+            <h3>Current Snapshot</h3>
+            <p>${generateCurrentSnapshot(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Background & Context</h3>
+            <p>${generateBackground(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Triggers & High-Risk Situations</h3>
+            <p>${generateTriggers(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Maintaining Factors</h3>
+            <p>${generateMaintaining(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Supports & Resources</h3>
+            <p>${generateSupports(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Patterns & Themes</h3>
+            <p>${generatePatterns(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Preferences & Strengths</h3>
+            <p>${generatePreferences(client)}</p>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Working Direction</h3>
+            <p>${generateDirection(client)}</p>
+          </div>
+        </div>
       `;
     }
     
-    function renderMetric(id, name, delta, values) {
+    function renderNotesTab(client) {
       return `
-        <div class="metric">
-          <div class="metric-head">
-            <div>
-              <div class="metric-name">${name}</div>
-              <div class="metric-sub ${delta.cls}" id="sub-${id}">
-                ${delta.arrow === '↔' ? '↔ stable vs baseline' : `${delta.arrow} sustained change vs baseline`}
+        <div class="content-card">
+          <h3>Supervisor Notes</h3>
+          
+          ${client.notes.length > 0 ? `
+            ${client.notes.map((note, idx) => `
+              <div class="note-item">
+                <div class="note-header">
+                  <div class="note-meta">${formatDate(note.date)} - ${note.author}</div>
+                  <div class="note-actions">
+                    <button class="btn btn-sm secondary" onclick="copyNoteToEHR('${currentClient}', ${idx})">Copy to EHR</button>
+                    <button class="btn btn-sm secondary" onclick="deleteNote('${currentClient}', ${idx})">Delete</button>
+                  </div>
+                </div>
+                <div class="note-text">${note.text}</div>
               </div>
-            </div>
-            <div class="muted">relative to baseline</div>
+            `).join('')}
+          ` : '<p>No notes yet.</p>'}
+          
+          <h3 style="margin-top: 24px;">Add New Note</h3>
+          <textarea id="newNoteText" placeholder="Enter your supervision notes here..."></textarea>
+          <div class="form-actions">
+            <button class="btn" onclick="saveNote('${currentClient}')">Save Note & Mark Reviewed</button>
+            <button class="btn secondary" onclick="saveAndCopyNote('${currentClient}')">Save & Copy to EHR</button>
           </div>
-          <svg class="spark" viewBox="0 0 300 60">
-            <line class="axis" x1="0" y1="50" x2="300" y2="50"></line>
-            <path class="line" id="line-${id}" d=""></path>
-            <g id="dots-${id}"></g>
-          </svg>
-          <div class="legend"><span>Entry 1</span><span>6</span></div>
         </div>
       `;
     }
     
-    function renderSummaryPanel(parts) {
-      return `
-        <h3 style="margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Structured review summary</h3>
-        <div class="small">Organized for human review. Describes patterns across entries without quoting source text.</div>
-        
-        <div class="summary-grid">
-          <div class="facet"><h4>Current snapshot</h4><p>${parts.current}</p></div>
-          <div class="facet"><h4>Background factors</h4><p>${parts.background}</p></div>
-          <div class="facet"><h4>Recent triggers</h4><p>${parts.triggers}</p></div>
-          <div class="facet"><h4>What keeps it going</h4><p>${parts.maintaining}</p></div>
-          <div class="facet"><h4>Supports / strengths</h4><p>${parts.supports}</p></div>
-          <div class="facet"><h4>Repeated patterns</h4><p>${parts.patterns}</p></div>
-          <div class="facet"><h4>Priorities / preferences</h4><p>${parts.preferences}</p></div>
-          <div class="facet"><h4>Working direction</h4><p>${parts.direction}</p></div>
-        </div>
-      `;
+    // ==================== SPARKLINE RENDERING ====================
+    
+    function renderSparklines(client) {
+      drawSparkline('spark-participation', client.indicators.participation);
+      drawSparkline('spark-forward', client.indicators.forwardMovement);
+      drawSparkline('spark-uncertainty', client.indicators.uncertainty);
+      drawSparkline('spark-ownership', client.indicators.ownership);
+      drawSparkline('spark-external', client.indicators.externalConstraints);
     }
     
-    function renderNotesPanel(clientId) {
-      const client = clientData[clientId];
-      const sup = supervisors[currentSupervisor];
+    function drawSparkline(canvasId, data) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
       
-      return `
-        <div class="notes-section">
-          <h3 style="margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Supervisor Notes</h3>
-          
-          ${client.notes.length === 0 ? '<div class="muted">No notes yet.</div>' : ''}
-          
-          ${client.notes.map((note, idx) => `
-            <div class="note-card">
-              <div class="note-header">
-                <div class="note-meta">${formatFullDate(note.date)} - ${note.author}</div>
-              </div>
-              <div class="note-text">${note.text}</div>
-              <div class="note-actions">
-                <button class="btn copy" data-copy-note="${idx}">Copy to EHR</button>
-                <button class="btn ghost" data-delete-note="${idx}">Delete</button>
-              </div>
-            </div>
-          `).join('')}
-          
-          <div class="note-form">
-            <textarea id="newNoteText" placeholder="Add a note about this client's progress, barriers, or follow-up needed..."></textarea>
-            <div class="note-form-actions">
-              <button class="btn" id="saveNote">Save Note & Mark Reviewed</button>
-              <button class="btn copy" id="saveAndCopy">Save & Copy to EHR</button>
-            </div>
-          </div>
-        </div>
-      `;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const padding = 5;
+      
+      ctx.clearRect(0, 0, width, height);
+      
+      const min = 0;
+      const max = 10;
+      const range = max - min;
+      
+      const xStep = (width - padding * 2) / (data.length - 1);
+      const yScale = (height - padding * 2) / range;
+      
+      // Draw line
+      ctx.beginPath();
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      
+      data.forEach((val, i) => {
+        const x = padding + i * xStep;
+        const y = height - padding - (val - min) * yScale;
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      
+      ctx.stroke();
+      
+      // Draw dots
+      ctx.fillStyle = '#2563eb';
+      data.forEach((val, i) => {
+        const x = padding + i * xStep;
+        const y = height - padding - (val - min) * yScale;
+        
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
     }
     
-    function attachClientDetailEventListeners() {
-      document.getElementById('backToCaseload').onclick = () => {
-        currentView = 'supervisor-caseload';
-        render();
-      };
+    function getDelta(data) {
+      if (data.length < 2) return '—';
+      const recent = data.slice(-3);
+      const earlier = data.slice(0, 3);
+      const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+      const earlierAvg = earlier.reduce((a, b) => a + b, 0) / earlier.length;
+      const diff = recentAvg - earlierAvg;
       
-      document.getElementById('markReviewed').onclick = () => {
-        clientData[currentClient].lastReviewed = Date.now();
-        showToast(`✓ Client ${currentClient} marked as reviewed`);
-        render();
-      };
+      if (Math.abs(diff) < 0.3) return '—';
+      return diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
+    }
+    
+    function getDeltaClass(data) {
+      const delta = getDelta(data);
+      if (delta === '—') return 'delta-neutral';
+      return parseFloat(delta) > 0 ? 'delta-up' : 'delta-down';
+    }
+    
+    // ==================== HELPER FUNCTIONS ====================
+    
+    function formatDate(date) {
+      const now = new Date();
+      const diff = now - date;
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      
+      if (hours < 1) return 'Just now';
+      if (hours < 24) return `${hours}h ago`;
+      if (days < 7) return `${days}d ago`;
+      return date.toLocaleDateString();
+    }
+    
+    function isNeglected(lastReviewed, status) {
+      const daysSince = (new Date() - lastReviewed) / 86400000;
+      if (status === 'urgent' && daysSince > 3) return true;
+      if ((status === 'watching' || status === 'stable') && daysSince > 7) return true;
+      return false;
+    }
+    
+    function generateQuickSummary(client) {
+      if (client.status === 'urgent') {
+        return "Recent sessions show declining engagement. Participation has dropped noticeably over the past 2-3 sessions. Client expressing more uncertainty about treatment goals and readiness to change. Recommend check-in to assess barriers and motivation.";
+      } else if (client.status === 'watching') {
+        return "Recent sessions show some fluctuation in engagement. Client working through specific stressor (housing instability) that may be impacting focus. Continue monitoring, may benefit from additional support resources.";
+      } else {
+        return "Client maintaining consistent engagement. Showing steady progress toward treatment goals. Active participation in sessions with clear evidence of skill application between sessions.";
+      }
+    }
+    
+    function generateCurrentSnapshot(client) {
+      if (client.status === 'urgent') {
+        return "Over the past 8 sessions, notes show marked decline in engagement. Early sessions (weeks 1-2) documented consistent attendance and active participation. Starting week 3, therapists began noting increased lateness and requests to leave group early. Most recent sessions show pattern of brief, guarded responses and difficulty staying focused. Client attended PHP 5 days/week initially; recent attendance has dropped to 3-4 days with two unexcused absences noted. Early notes referenced stable housing in sober living and recent employment; more recent documentation shows housing concerns emerging and job attendance becoming inconsistent.";
+      } else if (client.status === 'watching') {
+        return "Longitudinal notes over 8 sessions show fluctuating engagement pattern. Baseline sessions (weeks 1-3) documented good participation and commitment to treatment goals. Week 4 notes mark shift - therapists documented increased stress related to housing instability and reduced openness in sessions. Recent sessions show some stabilization but continued concern. Client initially presented with strong support system; recent notes document strained relationship with sponsor and limited family contact. Pattern suggests external stressors (housing, financial) impacting treatment engagement. Currently attending PHP 4-5 days/week, down from perfect attendance in early sessions.";
+      } else {
+        return "Notes across 8 sessions demonstrate consistent, improving engagement trajectory. Early sessions showed some guardedness and ambivalence about treatment commitment. Week 3 marked turning point - therapists documented increased openness and active skill practice. Recent sessions consistently note strong participation, completion of between-session assignments, and application of skills to real-life situations. Client initially residing in sober living; recent notes document transition to independent housing with maintained sobriety. Employment secured in week 4 has provided structure and improved self-esteem according to subsequent session documentation. Attendance remains at 5 days/week PHP with no missed sessions.";
+      }
+    }
+    
+    function generateBackground(client) {
+      if (client.status === 'urgent') {
+        return "Early session notes reference substance use history primarily involving alcohol and cannabis, with use escalating over recent years. Client initially provided limited detail about past treatment attempts; week 2-3 notes indicate multiple prior episodes with varying outcomes. Family history of alcoholism mentioned in week 1 intake. Trauma history emerged gradually - initial sessions noted 'difficult childhood'; week 4 notes reference more specific disclosures about neglect and past relationship violence. Depression and anxiety documented in treatment plan; client reports current medications though recent notes show concerns about medication adherence. Pattern across notes: client providing more historical detail when feeling engaged, becoming more guarded when struggling.";
+      } else {
+        return "Notes document 12-year substance use history, with pattern of escalation over past 3-5 years as disclosed across early sessions. Client has openly discussed multiple treatment attempts in weeks 1-3, including one period of 8 months sobriety. Family history of alcoholism (father) disclosed in initial session. Trauma background emerged over first month of treatment - week 1 noted 'past trauma', subsequent sessions provided more context about childhood neglect and domestic violence in early adulthood. Co-occurring depression and anxiety consistently referenced; medication management stable according to ongoing documentation. Treatment history shows pattern of initial engagement followed by dropout when facing external stressors - client showing awareness of this pattern in recent sessions.";
+      }
+    }
+    
+    function generateTriggers(client) {
+      if (client.status === 'urgent') {
+        return "Early sessions identified interpersonal conflict and financial stress as primary triggers. Week 1-2 notes show limited awareness of specific trigger situations. Understanding deepened over subsequent sessions - week 3 documentation links recent relapse urges to conflict with romantic partner. Social situations involving alcohol mentioned increasingly as treatment progressed. Recent notes document pattern: client encounters triggering situation → increased urges → reduced session engagement. Geographic triggers emerging in week 5+ notes - client reports difficulty when passing through old neighborhood. Family contact (particularly brother) identified in recent sessions as high-risk. Longitudinal pattern shows triggers becoming more specific and identifiable over time, but recent notes suggest overwhelm and difficulty implementing safety plans.";
+      } else {
+        return "Client's understanding of triggers has deepened significantly over course of treatment. Initial sessions identified general 'stress' as main trigger; subsequent notes show increasing specificity. Week 2-3 documentation linked interpersonal conflict (especially romantic relationships) to increased urges. Financial stress pattern emerged across multiple sessions - client noting correlation between money concerns and substance thoughts. Social situations involving alcohol consistently mentioned but client's confidence in navigating these has improved according to recent notes. Geographic triggers (old neighborhood, past using locations) identified early and client has developed avoidance strategies documented in weeks 4-6. Family dynamics, particularly contact with brother who still uses, identified as ongoing trigger but with improved boundary-setting noted in recent sessions.";
+      }
+    }
+    
+    function generateMaintaining(client) {
+      if (client.status === 'urgent') {
+        return "Notes indicate minimal coping skill development despite skill-building focus in early treatment. Week 1-3 documentation shows client learning basic techniques; weeks 4+ show limited application outside sessions. Pattern emerging across notes: tendency to isolate when stressed, which therapists consistently identify as increasing risk. Ambivalence about full lifestyle change noted increasingly in recent documentation - client maintaining contact with using friends despite treatment focus on building sober network. Housing instability mentioned with increasing frequency starting week 4; recent notes show this creating chronic stress affecting all areas. Difficulty asking for help documented across multiple sessions - therapists note client waits until crisis point. Recent notes show client minimizing concerns when asked directly, requiring attention to behavioral indicators. Downward trajectory in protective factors noted over past 3-4 sessions.";
+      } else {
+        return "Longitudinal notes show evolving understanding of maintaining factors. Early sessions documented limited coping skills for emotional regulation; progressive improvement noted through skill practice across weeks 3-6. Client initially tended toward isolation when stressed; recent notes show increased reaching out to supports. Some ambivalence about lifestyle change documented in middle sessions (weeks 3-4) including maintaining relationships with using friends, but recent notes indicate client setting clearer boundaries. Housing concerns mentioned periodically but stabilizing according to recent documentation. Pattern across notes: client initially struggled with asking for help proactively; recent sessions show improved help-seeking before reaching crisis. Ongoing challenge noted in several sessions: tendency to take on too much when feeling good, leading to stress and potential setback. Overall trajectory shows awareness of maintaining factors increasing and some skill development to address them.";
+      }
+    }
+    
+    function generateSupports(client) {
+      if (client.status === 'urgent') {
+        return "Support system showing deterioration over course of treatment according to session notes. Early documentation (weeks 1-3) referenced strong sponsor relationship with weekly meetings; recent notes indicate missed sponsor meetings and strained relationship. Family support from mother and sister initially noted as strength; week 5+ documentation shows decreased family contact and reluctance to share struggles with them. Connection to recovery center mentioned in early treatment; recent attendance there has declined according to client reports in sessions. Employment secured in week 3 initially noted as positive support and structure; recent notes document attendance issues and concern about job stability. Sober living environment initially providing peer support; recent notes suggest conflict with housemates and consideration of moving. Longitudinal pattern: supports weakening at same time engagement declining, creating vulnerability documented by therapists.";
+      } else {
+        return "Notes document strengthening support system over course of treatment. Sponsor relationship mentioned consistently across sessions with weekly contact maintained. Initial sessions showed geographic distance from family (mother, sister) as barrier; weeks 3-4 notes indicate increased phone contact and client feeling more supported. Recovery center connection established in week 2; subsequent notes show regular attendance at sober activities and development of new friendships. Employment secured in week 4 noted as significant achievement; ongoing sessions document job providing structure and sense of accomplishment. Housing transition from sober living to independent apartment handled well according to weeks 5-6 notes, with client maintaining connection to recovery community. Pattern across notes: client initially relying heavily on formal treatment supports, gradually building broader natural support network. Recent documentation shows proactive use of supports before problems escalate.";
+      }
+    }
+    
+    function generatePatterns(client) {
+      if (client.status === 'urgent') {
+        return "Clear pattern visible across 8 sessions: strong initial engagement (weeks 1-2) followed by gradual withdrawal when challenges emerge (weeks 3-4), with continued decline in recent sessions. This cycle previously observed in past treatment episodes as discussed in early sessions. Difficulty maintaining gains during stress documented repeatedly - each external stressor (housing issue week 4, job concern week 6) corresponds with drop in engagement. Therapists note across multiple sessions: client tends to minimize concerns when asked directly but behavioral indicators (late arrival, brief responses, missed sessions) tell different story. Early sessions showed openness to feedback; recent notes document increased defensiveness. Pattern of isolation when struggling noted in weeks 4-6, with client pulling away from both formal supports and recovery community. Previous pattern from past treatment: client does well with structure but struggles during transitions - currently observable as external supports becoming less stable. Therapists consistently document: client needs direct, supportive confrontation but recent sessions show decreased receptiveness.";
+      } else {
+        return "Longitudinal pattern across 8 sessions shows initial guardedness giving way to increased trust and engagement. Early sessions (weeks 1-2) documented some ambivalence and tendency to minimize struggles; week 3 marked shift with client becoming more forthcoming. Pattern noted by multiple therapists: client responds very well to structured, skills-focused approaches; open-ended emotional processing led to withdrawal in week 2 but CBT-focused approach in week 4 increased engagement. Cycle observable across treatment: client learns new skill → practices successfully → gains confidence → seeks more challenge. Client's response to setbacks has evolved - early sessions showed tendency toward self-criticism; recent notes document more self-compassion and problem-solving stance. Consistent pattern: client initially hesitant to ask for help but increasingly proactive about seeking support before reaching crisis. Therapists note across sessions: client values autonomy and reacts negatively to directive approach, but responds well to collaborative goal-setting. Strengths becoming more apparent over time: intelligence, insight (when not defensive), genuine motivation for change, strong work ethic. Recent sessions show client taking more ownership of recovery process.";
+      }
+    }
+    
+    function generatePreferences(client) {
+      if (client.status === 'urgent') {
+        return "Treatment approach preferences emerged through trial and error documented across sessions. Week 2 notes indicate client becoming withdrawn when processing focused on emotions and past trauma; therapist adjusted to skills-focus in week 3 with brief improvement in engagement. Client values autonomy according to ongoing documentation - reacts negatively when feeling controlled or directed. Recent notes show decreased responsiveness even to previously effective approaches. Early sessions documented sense of humor and ability to use informal therapeutic stance; recent sessions show client more guarded. Strengths identified in early treatment: intelligence, capacity for insight, genuine desire for change - recent notes express concern these strengths not currently accessible due to withdrawal and defensiveness. Work ethic initially strong (employed, attending regularly) but recent pattern shows decline. Ability to be honest in trusted relationships noted in early sessions; current notes suggest trust eroding. Pattern suggests client's preferences and strengths most accessible when feeling safe and engaged; current state of withdrawal limiting effectiveness of previously successful approaches.";
+      } else {
+        return "Clear preferences emerged and strengthened over course of treatment. Early experimentation (weeks 1-3) showed client responds much better to skills-focused, structured approaches rather than open-ended emotional processing - week 2 shift in approach led to notable engagement increase. Client consistently demonstrates need for autonomy - collaborative goal-setting more effective than directive approach according to multiple session notes. Appreciates direct communication style; responds well to honest feedback when delivered supportively (pattern across weeks 3-5). Sense of humor noted from early sessions has become therapeutic tool - client and therapist using humor to address difficult topics. Strengths increasingly apparent across treatment: strong intelligence and insight (particularly in weeks 4+), genuine motivation for change despite ambivalence, impressive work ethic demonstrated through employment and session attendance, ability to be honest and vulnerable in trusted relationship (deepening weeks 4-7). Problem-solving stance preferred over dwelling on problems - client most engaged when developing action plans and strategies. Recent sessions show client taking initiative in identifying own preferences and advocating for treatment approaches that work.";
+      }
+    }
+    
+    function generateDirection(client) {
+      if (client.status === 'urgent') {
+        return "Treatment direction has shifted based on recent trajectory. Initial focus (weeks 1-3) on skill development for emotional regulation and routine-building; client showed early progress. Week 4 marked turning point with emerging housing concerns; treatment pivoted to crisis management and stabilization. Recent sessions attempting to address growing isolation and reduced engagement - multiple notes document therapist efforts to re-establish connection. Sober social network expansion, initially treatment priority, has stalled according to weeks 5-6 documentation with client reporting decreased recovery community involvement. Relapse prevention planning begun in week 3 but recent notes indicate client difficulty implementing safety strategies. Housing instability identified as critical issue requiring attention before other treatment goals can be addressed. Current clinical concern documented across recent sessions: client showing pattern consistent with treatment dropout seen in previous episodes. Therapists noting need for possible higher level of care assessment if engagement continues declining. Immediate focus per recent notes: stabilizing external situation (housing), re-engaging client in treatment process, and preventing AMA discharge. Long-term goals (emotional regulation, sustainable routines, sober network) on hold pending stabilization.";
+      } else {
+        return "Treatment trajectory showing clear progression over 8 sessions. Initial focus (weeks 1-3) appropriately on stabilization, safety planning, and basic skill development; client demonstrated readiness to advance. Week 4 shift to more active skill-building phase, with client showing strong engagement and between-session practice. Recent sessions (weeks 6-8) document client applying skills with increasing independence and success. Emotional regulation initially primary focus; recent notes indicate solid progress with client independently using techniques. Routine-building showing sustainability - employment, housing stability, and recovery activities well-established according to ongoing documentation. Sober social network expanding progressively as documented across sessions; client reporting new recovery friendships and decreased isolation. Relapse prevention plan developed collaboratively in weeks 4-5; recent sessions show client implementing and refining strategies. Housing transition from sober living to independent apartment (week 6) managed successfully, demonstrating improved coping skills. Current treatment direction per recent notes: preparing for step-down to lower intensity care (IOP to outpatient), focus on maintaining gains and continuing skill development, strengthening natural support system, and planning for longer-term recovery management. Client actively participating in discharge planning and expressing appropriate confidence with realistic awareness of ongoing needs.";
+      }
+    }
+    
+    // ==================== EVENT HANDLERS ====================
+    
+    function attachEventListeners() {
+      // Supervisor/Therapist cards
+      document.querySelectorAll('[data-supervisor]').forEach(el => {
+        el.addEventListener('click', () => {
+          currentSupervisor = el.dataset.supervisor;
+          currentView = 'supervisor';
+          render();
+        });
+      });
+      
+      document.querySelectorAll('[data-therapist]').forEach(el => {
+        el.addEventListener('click', () => {
+          currentTherapist = el.dataset.therapist;
+          currentView = 'therapist';
+          render();
+        });
+      });
+      
+      // Client cards
+      document.querySelectorAll('.client-card').forEach(el => {
+        if (!el.querySelector('.client-actions')) {
+          el.addEventListener('click', () => {
+            viewClient(el.dataset.client);
+          });
+        }
+      });
+      
+      // Section toggles
+      document.querySelectorAll('[data-section]').forEach(el => {
+        el.addEventListener('click', () => {
+          const section = el.dataset.section;
+          collapsedSections[section] = !collapsedSections[section];
+          render();
+        });
+      });
       
       // Tabs
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.onclick = () => {
-          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-          tab.classList.add('active');
-          document.getElementById(tab.dataset.tab).classList.add('active');
-          
-          // Draw sparklines when trends tab is shown
-          if (tab.dataset.tab === 'trends') {
-            const client = clientData[currentClient];
-            const ind = client.entries.map(computeEntryIndicators);
-            const series = {
-              participation: ind.map(v => v.participation),
-              forward: ind.map(v => v.forward),
-              uncertainty: ind.map(v => v.uncertainty),
-              ownership: ind.map(v => v.ownership),
-              external: ind.map(v => v.external),
-            };
-            
-            setTimeout(() => {
-              drawSpark('participation', series.participation);
-              drawSpark('forward', series.forward);
-              drawSpark('uncertainty', series.uncertainty);
-              drawSpark('ownership', series.ownership);
-              drawSpark('external', series.external);
-            }, 10);
-          }
-        };
-      });
-      
-      // Notes
-      const saveNote = (copyToEHR = false) => {
-        const text = document.getElementById('newNoteText').value.trim();
-        if (!text) return;
-        
-        const sup = supervisors[currentSupervisor];
-        const note = {
-          date: Date.now(),
-          author: sup.name,
-          text: text
-        };
-        
-        clientData[currentClient].notes.push(note);
-        clientData[currentClient].lastReviewed = Date.now();
-        
-        if (copyToEHR) {
-          copyNoteToEHR(currentClient, text, note.date, note.author);
-        }
-        
-        showToast(`✓ Note saved${copyToEHR ? ' and copied to clipboard' : ''}`);
-        render();
-      };
-      
-      document.getElementById('saveNote').onclick = () => saveNote(false);
-      document.getElementById('saveAndCopy').onclick = () => saveNote(true);
-      
-      document.querySelectorAll('[data-copy-note]').forEach(btn => {
-        btn.onclick = () => {
-          const idx = parseInt(btn.dataset.copyNote);
-          const note = clientData[currentClient].notes[idx];
-          copyNoteToEHR(currentClient, note.text, note.date, note.author);
-        };
-      });
-      
-      document.querySelectorAll('[data-delete-note]').forEach(btn => {
-        btn.onclick = () => {
-          const idx = parseInt(btn.dataset.deleteNote);
-          clientData[currentClient].notes.splice(idx, 1);
-          showToast('Note deleted');
+      document.querySelectorAll('.tab').forEach(el => {
+        el.addEventListener('click', () => {
+          currentTab = el.dataset.tab;
           render();
-        };
+        });
       });
     }
     
-    function copyNoteToEHR(clientId, noteText, noteDate, author) {
-      const formatted = `Recovery Biometrics Supervisor Note - Client ${clientId}
-Date: ${formatFullDate(noteDate)}
-Supervisor: ${author}
+    function viewClient(clientId) {
+      currentClient = clientId;
+      currentView = 'client';
+      currentTab = 'overview';
+      render();
+    }
+    
+    function markReviewed(clientId) {
+      clients[clientId].lastReviewed = new Date();
+      clients[clientId].needsReview = false;
+      render();
+    }
+    
+    function goToVP() {
+      currentView = 'vp';
+      currentSupervisor = null;
+      currentTherapist = null;
+      render();
+    }
+    
+    function goToSupervisor(supId) {
+      currentSupervisor = supId;
+      currentView = 'supervisor';
+      currentTherapist = null;
+      render();
+    }
+    
+    function goBackFromClient() {
+      currentView = 'therapist';
+      currentClient = null;
+      render();
+    }
+    
+    function saveNote(clientId) {
+      const text = document.getElementById('newNoteText').value.trim();
+      if (!text) return;
+      
+      const account = accounts[currentAccount];
+      clients[clientId].notes.push({
+        date: new Date(),
+        author: account.name,
+        text: text
+      });
+      
+      markReviewed(clientId);
+    }
+    
+    function saveAndCopyNote(clientId) {
+      saveNote(clientId);
+      const latestNote = clients[clientId].notes[clients[clientId].notes.length - 1];
+      if (latestNote) {
+        copyNoteToEHR(clientId, clients[clientId].notes.length - 1);
+      }
+    }
+    
+    function copyNoteToEHR(clientId, noteIdx) {
+      const note = clients[clientId].notes[noteIdx];
+      const formatted = `Recovery Biometrics Supervisor Note - ${clientId}
+Date: ${note.date.toLocaleDateString()}
+Supervisor: ${note.author}
 
-${noteText}`;
+${note.text}`;
       
       navigator.clipboard.writeText(formatted).then(() => {
-        showToast('✓ Note copied to clipboard - paste into EHR');
-      }).catch(() => {
-        showToast('Unable to copy - please copy manually');
+        alert('Note copied to clipboard! Paste into your EHR.');
       });
     }
     
-    // ============================================================================
-    // INITIALIZE
-    // ============================================================================
+    function deleteNote(clientId, noteIdx) {
+      if (confirm('Delete this note?')) {
+        clients[clientId].notes.splice(noteIdx, 1);
+        render();
+      }
+    }
     
-    initAccountSwitcher();
+    // ==================== ACCOUNT SWITCHING ====================
+    
+    function toggleAccountDropdown() {
+      const dropdown = document.getElementById('accountDropdown');
+      dropdown.classList.toggle('show');
+    }
+    
+    function renderAccountDropdown() {
+      const dropdown = document.getElementById('accountDropdown');
+      dropdown.innerHTML = Object.keys(accounts).map(id => {
+        const acc = accounts[id];
+        return `
+          <div class="account-option ${currentAccount === id ? 'active' : ''}" onclick="switchAccount('${id}')">
+            <div style="font-weight: 600;">${acc.name}</div>
+            <div style="font-size: 11px; color: var(--muted);">${acc.role}</div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function switchAccount(accountId) {
+      currentAccount = accountId;
+      const account = accounts[accountId];
+      
+      // Reset view based on account type
+      if (account.type === 'vp') {
+        currentView = 'vp';
+        currentSupervisor = null;
+        currentTherapist = null;
+      } else if (account.type === 'supervisor') {
+        currentView = 'supervisor';
+        currentSupervisor = accountId;
+        currentTherapist = null;
+      } else if (account.type === 'therapist') {
+        currentView = 'therapist';
+        currentTherapist = accountId;
+        currentSupervisor = account.supervisor;
+      }
+      
+      currentClient = null;
+      
+      document.getElementById('currentAccount').textContent = `${account.name} (${account.type === 'vp' ? 'VP' : account.type === 'supervisor' ? 'Supervisor' : 'Therapist'})`;
+      document.getElementById('accountDropdown').classList.remove('show');
+      
+      render();
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.account-switcher')) {
+        document.getElementById('accountDropdown').classList.remove('show');
+      }
+    });
+    
+    // ==================== INITIALIZE ====================
+    
+    renderAccountDropdown();
     render();
   </script>
 </body>
